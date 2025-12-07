@@ -55,7 +55,7 @@ For EACH brand, provide this information in valid JSON format:
   {
     "company_name": "Brand Name Here",
     "website": "https://brandwebsite.com",
-    "contact_email": "pr@brand.com or marketing@brand.com (find if possible, otherwise empty string)",
+    "contact_email": "partnerships@brand.com",
     "category": "${category || 'lifestyle'}",
     "socials": {
       "instagram": "@brandhandle",
@@ -67,7 +67,13 @@ For EACH brand, provide this information in valid JSON format:
 ]
 \`\`\`
 
-IMPORTANT:
+IMPORTANT FOR contact_email:
+- Find their PARTNERSHIP, COLLABORATION, INFLUENCER, or CREATOR email
+- Good emails: partnerships@, collabs@, influencers@, creators@, hello@, info@, marketing@
+- Do NOT use press@ or media@ emails (those are for journalists, not creators)
+- If you can't find a partnership email, leave it as empty string ""
+
+OTHER REQUIREMENTS:
 - Focus on DTC brands that actively work with creators
 - Include mix of established and emerging brands
 - Prioritize brands with clean, aesthetic visual identity
@@ -96,14 +102,14 @@ TASK: The brand "${competitorBrand}" is a dream partner or past partner for Mich
 3. Are known to work with influencers/creators
 4. Would be receptive to UGC partnerships
 
-Return in this exact JSON format:
+For EACH brand, provide this information in valid JSON format:
 
 \`\`\`json
 [
   {
     "company_name": "Brand Name",
     "website": "https://brandwebsite.com",
-    "contact_email": "",
+    "contact_email": "partnerships@brand.com",
     "category": "category",
     "socials": {
       "instagram": "@handle",
@@ -114,6 +120,12 @@ Return in this exact JSON format:
   }
 ]
 \`\`\`
+
+IMPORTANT FOR contact_email:
+- Find their PARTNERSHIP, COLLABORATION, INFLUENCER, or CREATOR email
+- Good emails: partnerships@, collabs@, influencers@, creators@, hello@, info@, marketing@
+- Do NOT use press@ or media@ emails (those are for journalists, not creators)
+- If you can't find a partnership email, leave it as empty string ""
 
 Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
 
