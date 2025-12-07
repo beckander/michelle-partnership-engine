@@ -1,0 +1,31 @@
+{
+  "name": "michelle-partnership-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.86.2",
+    "@types/node": "^24.10.1",
+    "@types/nodemailer": "^7.0.4",
+    "@types/react": "^19.2.7",
+    "@types/uuid": "^10.0.0",
+    "autoprefixer": "^10.4.17",
+    "framer-motion": "^12.23.25",
+    "next": "^14.2.33",
+    "nodemailer": "^7.0.11",
+    "postcss": "^8.4.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.9.3",
+    "uuid": "^13.0.0"
+  }
+}
