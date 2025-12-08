@@ -5,17 +5,17 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 const brandPartners = [
-  { name: 'Pottery Barn', logo: '🏠' },
-  { name: 'YSL Beauty', logo: '💄' },
-  { name: 'Maybelline', logo: '✨' },
-  { name: 'Target', logo: '🎯' },
-  { name: 'Jo Malone', logo: '🕯️' },
-  { name: 'Poppui', logo: '🌸' },
+  { name: 'Pottery Barn', logo: '/logos/potterybarn.png' },
+  { name: 'Armani Beauty', logo: '/logos/armani.png' },
+  { name: 'Notion', logo: '/logos/notion.png' },
+  { name: 'Target', logo: '/logos/target.png' },
+  { name: 'Princess Polly', logo: '/logos/princesspolly.png' },
+  { name: 'Poppui', logo: '/logos/poppui.png' },
 ];
 
 const stats = [
-  { platform: 'YouTube', count: '36K', label: 'subscribers' },
-  { platform: 'Instagram', count: '10K', label: 'followers' },
+  { platform: 'YouTube', count: '37K', label: 'subscribers' },
+  { platform: 'Instagram', count: '9.7K', label: 'followers' },
   { platform: 'TikTok', count: '15K', label: 'followers' },
 ];
 
@@ -52,21 +52,21 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-cream-50">
+    <main className="min-h-screen bg-gradient-to-b from-[#FAF7F2] to-[#F5EFE6]">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-cream-50/80 backdrop-blur-md border-b border-cream-200">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#E8DFD0]">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="font-serif text-2xl text-taupe-700">
+          <Link href="/" className="font-serif text-2xl text-[#5C4D3C]">
             Michelle Choe
           </Link>
           <div className="flex gap-8 items-center">
-            <a href="#work" className="text-taupe-600 hover:text-taupe-700 transition-colors text-sm tracking-wide">
+            <a href="#work" className="text-[#7D6D5A] hover:text-[#5C4D3C] transition-colors text-sm tracking-wide">
               Work
             </a>
-            <a href="#brand-kit" className="text-taupe-600 hover:text-taupe-700 transition-colors text-sm tracking-wide">
+            <a href="#brand-kit" className="text-[#7D6D5A] hover:text-[#5C4D3C] transition-colors text-sm tracking-wide">
               Brand Kit
             </a>
-            <a href="#contact" className="btn btn-primary text-sm">
+            <a href="#contact" className="px-6 py-2.5 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg text-sm hover:bg-[#4A3D2F] transition-colors">
               Let's Collaborate
             </a>
           </div>
@@ -82,15 +82,27 @@ export default function HomePage() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center"
           >
-            <p className="text-taupe-500 tracking-[0.3em] uppercase text-sm mb-6">
-              UGC Creator & Lifestyle Storyteller
+            {/* Photo placeholder - replace src with actual photo */}
+            <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-4 border-[#D4C4A8] shadow-lg">
+              <img 
+                src="/michelle-photo.jpg" 
+                alt="Michelle Choe"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+            
+            <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-sm mb-4">
+              Lifestyle & Beauty Creator
             </p>
-            <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl text-taupe-700 mb-8 leading-tight">
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#5C4D3C] mb-8 leading-tight">
               Michelle Choe
             </h1>
-            <p className="text-taupe-600 text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
+            <p className="text-[#7D6D5A] text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
               Creating authentic, aesthetic content that connects brands 
-              with engaged audiences who crave cozy, elevated living.
+              with engaged audiences who crave elevated, beautiful living.
             </p>
             
             {/* Stats */}
@@ -103,8 +115,8 @@ export default function HomePage() {
                   transition={{ delay: 0.3 + index * 0.1 }}
                   className="text-center"
                 >
-                  <p className="font-serif text-4xl text-taupe-700">{stat.count}</p>
-                  <p className="text-taupe-500 text-sm tracking-wide">{stat.platform}</p>
+                  <p className="font-serif text-4xl text-[#5C4D3C]">{stat.count}</p>
+                  <p className="text-[#9A8B78] text-sm tracking-wide">{stat.platform}</p>
                 </motion.div>
               ))}
             </div>
@@ -113,7 +125,7 @@ export default function HomePage() {
       </section>
 
       {/* Brand Partners */}
-      <section className="py-20 px-6 bg-cream-100">
+      <section className="py-20 px-6 bg-[#F0E9DD]">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -121,10 +133,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-center text-taupe-500 tracking-[0.2em] uppercase text-sm mb-12">
+            <p className="text-center text-[#9A8B78] tracking-[0.2em] uppercase text-sm mb-12">
               Trusted by brands like
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
               {brandPartners.map((brand, index) => (
                 <motion.div
                   key={brand.name}
@@ -132,10 +144,17 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex flex-col items-center justify-center p-6 bg-cream-50 rounded-2xl shadow-soft hover:shadow-soft-lg transition-shadow"
+                  className="flex items-center justify-center p-6 bg-[#FAF7F2] rounded-xl shadow-sm hover:shadow-md transition-shadow h-24"
                 >
-                  <span className="text-4xl mb-3">{brand.logo}</span>
-                  <span className="text-taupe-600 text-sm font-medium">{brand.name}</span>
+                  <img 
+                    src={brand.logo} 
+                    alt={brand.name}
+                    className="max-h-12 max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.innerHTML = `<span class="text-[#7D6D5A] text-sm font-medium">${brand.name}</span>`;
+                    }}
+                  />
                 </motion.div>
               ))}
             </div>
@@ -151,15 +170,15 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-serif text-5xl text-taupe-700 text-center mb-4">
+            <h2 className="font-serif text-4xl text-[#5C4D3C] text-center mb-4">
               Featured Work
             </h2>
-            <p className="text-taupe-500 text-center mb-16 max-w-xl mx-auto">
+            <p className="text-[#9A8B78] text-center mb-16 max-w-xl mx-auto">
               A selection of brand collaborations showcasing authentic, lifestyle-driven content.
             </p>
           </motion.div>
 
-          {/* Work Grid - Placeholder for now */}
+          {/* Work Grid - Placeholder for videos/images */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((item) => (
               <motion.div
@@ -168,16 +187,16 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: item * 0.1 }}
-                className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-cream-200 to-blush-100 flex items-center justify-center shadow-soft hover:shadow-soft-lg transition-all cursor-pointer group overflow-hidden"
+                className="aspect-[4/5] rounded-xl bg-gradient-to-br from-[#E8DFD0] to-[#D4C4A8] flex items-center justify-center shadow-sm hover:shadow-md transition-all cursor-pointer group overflow-hidden"
               >
                 <div className="text-center p-6">
-                  <div className="w-16 h-16 rounded-full bg-cream-50/80 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <svg className="w-6 h-6 text-taupe-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-14 h-14 rounded-full bg-[#FAF7F2]/80 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <svg className="w-6 h-6 text-[#7D6D5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <p className="text-taupe-500 text-sm">Video {item}</p>
+                  <p className="text-[#7D6D5A] text-sm">Coming Soon</p>
                 </div>
               </motion.div>
             ))}
@@ -186,27 +205,25 @@ export default function HomePage() {
       </section>
 
       {/* Brand Kit Section */}
-      <section id="brand-kit" className="py-24 px-6 bg-cream-100">
+      <section id="brand-kit" className="py-24 px-6 bg-[#F0E9DD]">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-serif text-5xl text-taupe-700 text-center mb-4">
+            <h2 className="font-serif text-4xl text-[#5C4D3C] text-center mb-4">
               Brand Kit
             </h2>
-            <p className="text-taupe-500 text-center mb-16 max-w-xl mx-auto">
+            <p className="text-[#9A8B78] text-center mb-16 max-w-xl mx-auto">
               Everything you need to know about working with me.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { title: 'Media Kit', desc: 'Full overview, demographics & rates', icon: '📊' },
-              { title: 'Analytics', desc: 'Platform performance & engagement', icon: '📈' },
-              { title: 'Sample Work', desc: 'Content examples & deliverables', icon: '🎬' },
-              { title: 'Aesthetic Guide', desc: 'Moodboards & visual style', icon: '🎨' },
+              { title: 'Media Kit', desc: 'Rates, demographics & analytics', icon: 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
+              { title: 'Previous Work', desc: 'Content examples & deliverables', icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z' },
             ].map((item, index) => (
               <motion.a
                 key={item.title}
@@ -215,16 +232,18 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="flex items-center gap-6 p-6 bg-cream-50 rounded-2xl shadow-soft hover:shadow-soft-lg transition-all group"
+                className="flex items-center gap-5 p-6 bg-[#FAF7F2] rounded-xl shadow-sm hover:shadow-md transition-all group"
               >
-                <div className="w-14 h-14 rounded-xl bg-cream-200 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  {item.icon}
+                <div className="w-12 h-12 rounded-lg bg-[#E8DFD0] flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <svg className="w-6 h-6 text-[#7D6D5A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
+                  </svg>
                 </div>
-                <div>
-                  <h3 className="font-serif text-xl text-taupe-700 mb-1">{item.title}</h3>
-                  <p className="text-taupe-500 text-sm">{item.desc}</p>
+                <div className="flex-1">
+                  <h3 className="font-serif text-lg text-[#5C4D3C] mb-0.5">{item.title}</h3>
+                  <p className="text-[#9A8B78] text-sm">{item.desc}</p>
                 </div>
-                <svg className="w-5 h-5 text-taupe-400 ml-auto group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-[#9A8B78] group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </motion.a>
@@ -241,10 +260,10 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-serif text-5xl text-taupe-700 text-center mb-4">
+            <h2 className="font-serif text-4xl text-[#5C4D3C] text-center mb-4">
               Let's Create Together
             </h2>
-            <p className="text-taupe-500 text-center mb-12">
+            <p className="text-[#9A8B78] text-center mb-12">
               Interested in a collaboration? I'd love to hear from you.
             </p>
           </motion.div>
@@ -253,11 +272,15 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-16 bg-cream-100 rounded-2xl"
+              className="text-center py-16 bg-[#F0E9DD] rounded-xl"
             >
-              <div className="text-5xl mb-4">💌</div>
-              <h3 className="font-serif text-2xl text-taupe-700 mb-2">Thank you!</h3>
-              <p className="text-taupe-500">I'll get back to you within 48 hours.</p>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#D4C4A8] flex items-center justify-center">
+                <svg className="w-8 h-8 text-[#5C4D3C]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="font-serif text-2xl text-[#5C4D3C] mb-2">Thank you!</h3>
+              <p className="text-[#7D6D5A]">I'll get back to you within 48 hours.</p>
             </motion.div>
           ) : (
             <motion.form
@@ -269,54 +292,54 @@ export default function HomePage() {
             >
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-taupe-600 text-sm mb-2">Your Name</label>
+                  <label className="block text-[#5C4D3C] text-sm mb-2">Your Name</label>
                   <input
                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-cream-100 border border-cream-300 text-taupe-700 placeholder:text-taupe-400"
+                    className="w-full px-4 py-3 rounded-lg bg-[#F0E9DD] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] focus:outline-none focus:border-[#D4C4A8]"
                     placeholder="Jane Smith"
                   />
                 </div>
                 <div>
-                  <label className="block text-taupe-600 text-sm mb-2">Email</label>
+                  <label className="block text-[#5C4D3C] text-sm mb-2">Email</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-cream-100 border border-cream-300 text-taupe-700 placeholder:text-taupe-400"
+                    className="w-full px-4 py-3 rounded-lg bg-[#F0E9DD] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] focus:outline-none focus:border-[#D4C4A8]"
                     placeholder="jane@brand.com"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-taupe-600 text-sm mb-2">Company / Brand</label>
+                <label className="block text-[#5C4D3C] text-sm mb-2">Company / Brand</label>
                 <input
                   type="text"
                   required
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-cream-100 border border-cream-300 text-taupe-700 placeholder:text-taupe-400"
+                  className="w-full px-4 py-3 rounded-lg bg-[#F0E9DD] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] focus:outline-none focus:border-[#D4C4A8]"
                   placeholder="Your Brand Name"
                 />
               </div>
               <div>
-                <label className="block text-taupe-600 text-sm mb-2">Tell me about your project</label>
+                <label className="block text-[#5C4D3C] text-sm mb-2">Tell me about your project</label>
                 <textarea
                   required
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-cream-100 border border-cream-300 text-taupe-700 placeholder:text-taupe-400 resize-none"
+                  className="w-full px-4 py-3 rounded-lg bg-[#F0E9DD] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] resize-none focus:outline-none focus:border-[#D4C4A8]"
                   placeholder="I'd love to learn about your partnership goals, timeline, and budget..."
                 />
               </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full btn btn-primary py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg text-base hover:bg-[#4A3D2F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
@@ -326,28 +349,28 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-cream-200">
+      <footer className="py-12 px-6 border-t border-[#E8DFD0]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="font-serif text-xl text-taupe-700">Michelle Choe</p>
+          <p className="font-serif text-xl text-[#5C4D3C]">Michelle Choe</p>
           <div className="flex gap-6">
-            <a href="#" className="text-taupe-500 hover:text-taupe-700 transition-colors">
+            <a href="#" className="text-[#7D6D5A] hover:text-[#5C4D3C] transition-colors">
               YouTube
             </a>
-            <a href="#" className="text-taupe-500 hover:text-taupe-700 transition-colors">
+            <a href="#" className="text-[#7D6D5A] hover:text-[#5C4D3C] transition-colors">
               Instagram
             </a>
-            <a href="#" className="text-taupe-500 hover:text-taupe-700 transition-colors">
+            <a href="#" className="text-[#7D6D5A] hover:text-[#5C4D3C] transition-colors">
               TikTok
             </a>
           </div>
-          <p className="text-taupe-400 text-sm">© 2024 Michelle Choe</p>
+          <p className="text-[#9A8B78] text-sm">© 2024 Michelle Choe</p>
         </div>
       </footer>
 
-      {/* Admin Link - subtle */}
+      {/* Hidden Admin Link */}
       <Link 
         href="/dashboard" 
-        className="fixed bottom-4 right-4 w-10 h-10 rounded-full bg-cream-200 flex items-center justify-center text-taupe-500 hover:bg-cream-300 transition-colors opacity-50 hover:opacity-100"
+        className="fixed bottom-4 right-4 w-10 h-10 rounded-full bg-[#E8DFD0] flex items-center justify-center text-[#7D6D5A] hover:bg-[#D4C4A8] transition-colors opacity-30 hover:opacity-100"
         title="Dashboard"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
