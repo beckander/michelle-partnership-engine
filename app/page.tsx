@@ -209,9 +209,6 @@ export default function HomePage() {
             <a href="#work" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
               Work
             </a>
-            <a href="#brand-kit" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
-              Press
-            </a>
             <a 
               href="#contact" 
               className="px-5 py-2 border border-[#3D3225] text-[#3D3225] text-xs tracking-[0.15em] uppercase hover:bg-[#3D3225] hover:text-[#FDFBF7] transition-all duration-300"
@@ -486,50 +483,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Brand Kit Section - Compact */}
-      <section id="brand-kit" className="py-16 px-8 bg-[#F5F1EB]">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-10"
-          >
-            <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-3">For Brands</p>
-            <h2 className="font-serif text-3xl text-[#3D3225] font-light">
-              Press <span className="italic">Kit</span>
-            </h2>
-          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              { title: 'Media Kit', desc: 'Rates, demographics & analytics' },
-              { title: 'Previous Work', desc: 'Content examples & deliverables' },
-            ].map((item, index) => (
-              <motion.a
-                key={item.title}
-                href="#"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.8 }}
-                className="group p-6 bg-[#FDFBF7] border border-[#E8E0D4] hover:border-[#C9B99A] transition-all duration-500"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="font-serif text-lg text-[#3D3225] mb-1 font-light">{item.title}</h3>
-                    <p className="text-[#9A8B78] text-sm font-light">{item.desc}</p>
-                  </div>
-                  <span className="text-[#C9B99A] group-hover:translate-x-1 transition-transform duration-300">
-                    →
-                  </span>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Contact Form - Compact */}
       <section id="contact" className="py-16 px-8">
