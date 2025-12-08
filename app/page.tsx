@@ -269,38 +269,47 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-              className="relative flex-shrink-0"
+              className="relative flex-shrink-0 mr-8"
             >
-              {/* Outer decorative ring */}
-              <div className="absolute -inset-6 rounded-full border border-[#C9B99A]/20" />
-              
-              {/* Middle ring with subtle gradient */}
-              <div className="absolute -inset-3 rounded-full border border-[#C9B99A]/30" />
-              
-              {/* Mirror frame effect */}
-              <div className="relative w-72 h-72 rounded-full overflow-hidden shadow-[0_8px_40px_rgba(61,50,37,0.15)]">
-                {/* Gold inner border */}
-                <div className="absolute inset-0 rounded-full border-4 border-[#C9B99A]/40 z-10" />
-                
-                {/* Photo */}
-                <img 
-                  src="/michelle-photo.jpg" 
-                  alt="Michelle Choe"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
+              {/* Bronze/Gold mirror frame */}
+              <div className="relative w-80 h-80">
+                {/* Outer bronze ring */}
+                <div 
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: 'linear-gradient(145deg, #D4A574 0%, #8B6914 25%, #C9A227 50%, #8B6914 75%, #D4A574 100%)',
+                    padding: '6px',
                   }}
-                />
+                >
+                  <div className="w-full h-full rounded-full bg-[#FDFBF7]" />
+                </div>
                 
-                {/* Subtle shine overlay for mirror effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+                {/* Inner bronze ring */}
+                <div 
+                  className="absolute inset-3 rounded-full"
+                  style={{
+                    background: 'linear-gradient(145deg, #C9A227 0%, #8B6914 30%, #D4A574 50%, #8B6914 70%, #C9A227 100%)',
+                    padding: '4px',
+                  }}
+                >
+                  <div className="w-full h-full rounded-full bg-[#FDFBF7]" />
+                </div>
                 
-                {/* Vignette */}
-                <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(61,50,37,0.15)] rounded-full" />
+                {/* Photo container */}
+                <div className="absolute inset-6 rounded-full overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,0.1)]">
+                  <img 
+                    src="/michelle-photo.jpg" 
+                    alt="Michelle Choe"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  
+                  {/* Subtle shine overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+                </div>
               </div>
-
-              {/* Small decorative accent */}
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full border border-[#C9B99A]/50 bg-[#FDFBF7]" />
             </motion.div>
           </div>
         </div>
