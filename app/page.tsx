@@ -211,7 +211,7 @@ export default function HomePage() {
             </a>
             <a 
               href="#contact" 
-              className="px-5 py-2 border border-[#3D3225] text-[#3D3225] text-xs tracking-[0.15em] uppercase hover:bg-[#3D3225] hover:text-[#FDFBF7] transition-all duration-300"
+              className="px-5 py-2 bg-[#8B7355] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#6B5D4D] transition-all duration-300"
             >
               Collaborate
             </a>
