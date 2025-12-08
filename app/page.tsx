@@ -29,48 +29,50 @@ const tiktokVideos = [
 
 function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: string; position: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const isCenter = position === 0;
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
-    if (videoRef.current) {
+    // Only auto-start on hover if not already playing
+    if (!isPlaying && videoRef.current) {
+      videoRef.current.muted = false;
       videoRef.current.play();
+      setIsPlaying(true);
+      setHasStarted(true);
     }
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
-
-  const toggleMute = (e: React.MouseEvent) => {
+  const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(!isMuted);
+      if (isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        videoRef.current.muted = false;
+        videoRef.current.play();
+        setIsPlaying(true);
+        setHasStarted(true);
+      }
     }
   };
 
   return (
     <div
-      className={`relative aspect-[9/16] overflow-hidden bg-[#E8E0D4] transition-all duration-500 ${
+      className={`relative aspect-[9/16] overflow-hidden bg-[#E8E0D4] transition-all duration-500 cursor-pointer ${
         isCenter ? 'scale-110 shadow-2xl z-10' : 'scale-90 opacity-60'
       }`}
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
-      {/* Thumbnail */}
+      {/* Thumbnail - shows when video hasn't started */}
       <img
         src={thumbnail}
         alt="Video thumbnail"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-          isHovered ? 'opacity-0' : 'opacity-100'
+          hasStarted ? 'opacity-0' : 'opacity-100'
         }`}
       />
       
@@ -78,17 +80,16 @@ function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: s
       <video
         ref={videoRef}
         src={video}
-        muted={isMuted}
         loop
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
+          hasStarted ? 'opacity-100' : 'opacity-0'
         }`}
       />
 
-      {/* Play icon overlay (shows when not hovering) */}
+      {/* Play icon overlay (shows when not started or paused) */}
       <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-        isHovered ? 'opacity-0' : 'opacity-100'
+        !hasStarted || !isPlaying ? 'opacity-100' : 'opacity-0'
       }`}>
         <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
           <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -97,24 +98,16 @@ function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: s
         </div>
       </div>
 
-      {/* Sound toggle button (shows when hovering) */}
-      <button
-        onClick={toggleMute}
-        className={`absolute bottom-3 left-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 hover:bg-black/60 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        {isMuted ? (
-          <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+      {/* Pause indicator (shows briefly when playing) */}
+      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 pointer-events-none ${
+        isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-0'
+      }`}>
+        <div className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center">
+          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
           </svg>
-        ) : (
-          <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-          </svg>
-        )}
-      </button>
+        </div>
+      </div>
 
       {/* TikTok icon */}
       <div className="absolute bottom-3 right-3">
@@ -122,6 +115,14 @@ function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: s
           <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
         </svg>
       </div>
+
+      {/* Playing indicator */}
+      {isPlaying && (
+        <div className="absolute top-3 left-3 flex items-center gap-1">
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <span className="text-white text-xs font-medium drop-shadow-lg">LIVE</span>
+        </div>
+      )}
     </div>
   );
 }
