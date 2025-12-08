@@ -223,13 +223,13 @@ export default function HomePage() {
       {/* Hero Section - Compact */}
       <section className="pt-28 pb-12 px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-16">
+          <div className="flex items-center justify-center gap-24">
             {/* Left side - Text */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: 'easeOut' }}
-              className="flex-1"
+              className="flex-1 max-w-md"
             >
               <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-4">
                 Lifestyle & Beauty Creator
@@ -266,7 +266,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-              className="relative flex-shrink-0 mr-8"
+              className="relative flex-shrink-0"
             >
               {/* Bronze/Gold mirror frame */}
               <div className="relative w-80 h-80">
