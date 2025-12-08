@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const brandPartners = [
   { name: 'Pottery Barn', logo: '/logos/potterybarn.png' },
@@ -19,7 +19,85 @@ const stats = [
   { platform: 'TikTok', count: '15K' },
 ];
 
+const tiktokVideos = [
+  { video: '/videos/tiktok1.mov', thumbnail: '/videos/thumb1.jpg' },
+  { video: '/videos/tiktok2.mov', thumbnail: '/videos/thumb2.jpg' },
+  { video: '/videos/tiktok3.mov', thumbnail: '/videos/thumb3.jpg' },
+  { video: '/videos/tiktok4.mov', thumbnail: '/videos/thumb4.jpg' },
+  { video: '/videos/tiktok5.mov', thumbnail: '/videos/thumb5.jpg' },
+];
+
+function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: string; isCenter: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  return (
+    <div
+      className={`relative aspect-[9/16] overflow-hidden bg-[#E8E0D4] transition-all duration-500 ${
+        isCenter ? 'scale-105 shadow-2xl z-10' : 'scale-95 opacity-80'
+      }`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Thumbnail */}
+      <img
+        src={thumbnail}
+        alt="Video thumbnail"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+          isHovered ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+      
+      {/* Video */}
+      <video
+        ref={videoRef}
+        src={video}
+        muted
+        loop
+        playsInline
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+          isHovered ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
+      {/* Play icon overlay */}
+      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+        isHovered ? 'opacity-0' : 'opacity-100'
+      }`}>
+        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+          <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+      </div>
+
+      {/* TikTok icon */}
+      <div className="absolute bottom-3 right-3">
+        <svg className="w-5 h-5 text-white drop-shadow-lg opacity-70" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
+  const [activeIndex, setActiveIndex] = useState(2); // Center video
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,6 +129,14 @@ export default function HomePage() {
     }
   };
 
+  const nextVideo = () => {
+    setActiveIndex((prev) => (prev + 1) % tiktokVideos.length);
+  };
+
+  const prevVideo = () => {
+    setActiveIndex((prev) => (prev - 1 + tiktokVideos.length) % tiktokVideos.length);
+  };
+
   return (
     <main className="min-h-screen bg-[#FDFBF7] relative overflow-hidden">
       {/* Subtle texture overlay */}
@@ -68,6 +154,9 @@ export default function HomePage() {
             Michelle Choe
           </Link>
           <div className="flex gap-10 items-center">
+            <a href="#work" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
+              Work
+            </a>
             <a href="#brand-kit" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
               Press
             </a>
@@ -211,8 +300,119 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C9B99A] to-transparent opacity-30" />
       </section>
 
+      {/* Featured Work Section - Video Carousel */}
+      <section id="work" className="py-28 px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-4">Portfolio</p>
+            <h2 className="font-serif text-4xl md:text-5xl text-[#3D3225] font-light">
+              Featured <span className="italic">Work</span>
+            </h2>
+          </motion.div>
+
+          {/* TikTok Carousel */}
+          <div className="mb-20">
+            <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-8">Short Form</p>
+            
+            <div className="relative">
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevVideo}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 bg-[#FDFBF7] border border-[#E8E0D4] flex items-center justify-center hover:border-[#C9B99A] transition-colors"
+              >
+                <svg className="w-5 h-5 text-[#3D3225]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={nextVideo}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 bg-[#FDFBF7] border border-[#E8E0D4] flex items-center justify-center hover:border-[#C9B99A] transition-colors"
+              >
+                <svg className="w-5 h-5 text-[#3D3225]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
+              {/* Carousel Container */}
+              <div className="flex justify-center items-center gap-4 px-16">
+                {tiktokVideos.map((item, index) => {
+                  // Calculate position relative to active
+                  const position = (index - activeIndex + tiktokVideos.length) % tiktokVideos.length;
+                  const isVisible = position <= 2 || position >= tiktokVideos.length - 2;
+                  const isCenter = position === 0;
+                  
+                  if (!isVisible) return null;
+                  
+                  return (
+                    <motion.div
+                      key={index}
+                      className="w-48 flex-shrink-0 cursor-pointer"
+                      onClick={() => setActiveIndex(index)}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <VideoCard
+                        video={item.video}
+                        thumbnail={item.thumbnail}
+                        isCenter={isCenter}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Dots indicator */}
+              <div className="flex justify-center gap-2 mt-8">
+                {tiktokVideos.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === activeIndex ? 'bg-[#3D3225] w-6' : 'bg-[#D4C8B8]'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* YouTube Video */}
+          <div>
+            <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-8">Long Form</p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative max-w-4xl"
+            >
+              {/* Decorative frame */}
+              <div className="absolute -inset-3 border border-[#C9B99A]/20" />
+              
+              <div className="relative aspect-video bg-[#E8E0D4] overflow-hidden">
+                <iframe
+                  src="https://www.youtube.com/embed/1L3WDH6_KSM"
+                  title="YouTube video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Brand Kit Section */}
-      <section id="brand-kit" className="py-28 px-8">
+      <section id="brand-kit" className="py-28 px-8 bg-[#F5F1EB]">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -257,7 +457,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Form */}
-      <section id="contact" className="py-28 px-8 bg-[#F5F1EB]">
+      <section id="contact" className="py-28 px-8">
         <div className="max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -276,7 +476,7 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-16 border border-[#E8E0D4] bg-[#FDFBF7]"
+              className="text-center py-16 border border-[#E8E0D4]"
             >
               <div className="w-16 h-16 mx-auto mb-6 border border-[#C9B99A] flex items-center justify-center">
                 <svg className="w-6 h-6 text-[#C9B99A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -356,18 +556,33 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-8 border-t border-[#E8E0D4] bg-[#FDFBF7]">
+      <footer className="py-16 px-8 border-t border-[#E8E0D4]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <p className="font-serif text-xl text-[#3D3225] font-light tracking-wide">Michelle Choe</p>
             <div className="flex gap-10">
-              <a href="#" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase">
+              <a 
+                href="https://www.youtube.com/c/MichelleChoe" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase"
+              >
                 YouTube
               </a>
-              <a href="#" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase">
+              <a 
+                href="https://www.instagram.com/_michellechoe/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase"
+              >
                 Instagram
               </a>
-              <a href="#" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase">
+              <a 
+                href="https://www.tiktok.com/@_michellechoe" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase"
+              >
                 TikTok
               </a>
             </div>

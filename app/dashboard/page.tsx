@@ -1,363 +1,185 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-interface Lead {
-  id: string;
-  company_name: string;
-  contact_name: string;
-  contact_email: string;
-  website: string;
-  category: string;
-  source: string;
-  status: string;
-  ai_pitch: string;
-  notes: string;
-  created_at: string;
-  updated_at: string;
-}
-
-const statusOptions = [
-  { key: 'new', label: 'New', color: 'bg-[#F5F1EB] text-[#3D3225]' },
-  { key: 'contacted', label: 'Contacted', color: 'bg-[#E8E0D4] text-[#3D3225]' },
-  { key: 'replied', label: 'Replied', color: 'bg-[#D4C8B8] text-[#3D3225]' },
-  { key: 'negotiating', label: 'Negotiating', color: 'bg-[#C9B99A] text-[#3D3225]' },
-  { key: 'contract_sent', label: 'Contract', color: 'bg-[#B8A888] text-white' },
-  { key: 'closed_won', label: 'Won', color: 'bg-[#3D3225] text-[#FDFBF7]' },
-  { key: 'dead', label: 'Closed', color: 'bg-[#9A8B78] text-white' },
+const navItems = [
+  { href: '/dashboard', label: 'Pipeline' },
+  { href: '/dashboard/find-leads', label: 'Find Leads' },
+  { href: '/dashboard/import', label: 'Import' },
+  { href: '/dashboard/emails', label: 'Emails' },
 ];
 
-export default function PipelinePage() {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-  const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+// Simple password - change this to whatever you want
+const DASHBOARD_PASSWORD = 'michelle2024';
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchLeads();
+    const auth = sessionStorage.getItem('dashboard_auth');
+    if (auth === 'true') {
+      setIsAuthenticated(true);
+    }
+    setIsLoading(false);
   }, []);
 
-  const fetchLeads = async () => {
-    try {
-      const res = await fetch('/api/leads');
-      const data = await res.json();
-      setLeads(data.leads || []);
-    } catch (error) {
-      console.error('Error fetching leads:', error);
-    } finally {
-      setLoading(false);
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === DASHBOARD_PASSWORD) {
+      sessionStorage.setItem('dashboard_auth', 'true');
+      setIsAuthenticated(true);
+      setError('');
+    } else {
+      setError('Incorrect password');
     }
   };
 
-  const updateLeadStatus = async (leadId: string, newStatus: string) => {
-    try {
-      await fetch(`/api/leads/${leadId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      
-      setLeads(leads.map(lead => 
-        lead.id === leadId ? { ...lead, status: newStatus } : lead
-      ));
-      
-      if (selectedLead?.id === leadId) {
-        setSelectedLead({ ...selectedLead, status: newStatus });
-      }
-    } catch (error) {
-      console.error('Error updating lead:', error);
-    }
+  const handleLogout = () => {
+    sessionStorage.removeItem('dashboard_auth');
+    setIsAuthenticated(false);
   };
 
-  const deleteLead = async (leadId: string) => {
-    if (!confirm('Are you sure you want to delete this lead?')) return;
-    
-    try {
-      await fetch(`/api/leads/${leadId}`, { method: 'DELETE' });
-      setLeads(leads.filter(lead => lead.id !== leadId));
-      setSelectedLead(null);
-    } catch (error) {
-      console.error('Error deleting lead:', error);
-    }
-  };
-
-  const filteredLeads = leads.filter(lead => {
-    const matchesStatus = filterStatus === 'all' || lead.status === filterStatus;
-    const matchesSearch = lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          lead.contact_email.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
-
-  const getStatusCounts = () => {
-    const counts: Record<string, number> = { all: leads.length };
-    statusOptions.forEach(s => {
-      counts[s.key] = leads.filter(l => l.status === s.key).length;
-    });
-    return counts;
-  };
-
-  const counts = getStatusCounts();
-
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-96">
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center">
         <div className="text-[#9A8B78] text-sm tracking-wider">Loading...</div>
       </div>
     );
   }
 
-  return (
-    <div className="max-w-5xl">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <div>
-          <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-2">Overview</p>
-          <h1 className="font-serif text-2xl text-[#3D3225] font-light">Partnership Pipeline</h1>
-          <p className="text-[#9A8B78] text-sm mt-1">
-            {leads.length} leads · {counts.closed_won || 0} won
-          </p>
-        </div>
-        <Link
-          href="/dashboard/find-leads"
-          className="px-6 py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors"
-        >
-          Find New Leads
-        </Link>
-      </div>
-
-      {/* Filters */}
-      <div className="border border-[#E8E0D4] p-5 mb-6 bg-[#FDFBF7]">
-        <div className="flex flex-col sm:flex-row gap-4">
-          {/* Search */}
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search leads..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2.5 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] text-sm focus:outline-none focus:border-[#C9B99A] transition-colors"
-            />
-          </div>
-          
-          {/* Status Filter */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setFilterStatus('all')}
-              className={`px-4 py-2 text-xs tracking-[0.1em] uppercase transition-all ${
-                filterStatus === 'all'
-                  ? 'bg-[#3D3225] text-[#FDFBF7]'
-                  : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
-              }`}
-            >
-              All ({counts.all})
-            </button>
-            {statusOptions.slice(0, -1).map((status) => (
-              <button
-                key={status.key}
-                onClick={() => setFilterStatus(status.key)}
-                className={`px-4 py-2 text-xs tracking-[0.1em] uppercase transition-all ${
-                  filterStatus === status.key
-                    ? 'bg-[#3D3225] text-[#FDFBF7]'
-                    : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
-                }`}
-              >
-                {status.label} ({counts[status.key] || 0})
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Leads Table */}
-      <div className="border border-[#E8E0D4] bg-[#FDFBF7]">
-        {filteredLeads.length === 0 ? (
-          <div className="text-center py-16 text-[#9A8B78]">
-            {leads.length === 0 ? (
-              <>
-                <p className="mb-4 text-sm">No leads yet</p>
-                <Link href="/dashboard/find-leads" className="text-[#3D3225] text-xs tracking-[0.1em] uppercase border-b border-[#3D3225] pb-0.5 hover:border-[#C9B99A] hover:text-[#C9B99A] transition-colors">
-                  Find your first leads
-                </Link>
-              </>
-            ) : (
-              <p className="text-sm">No leads match your filter</p>
-            )}
-          </div>
-        ) : (
-          <table className="w-full">
-            <thead className="border-b border-[#E8E0D4]">
-              <tr className="bg-[#F5F1EB]">
-                <th className="text-left px-5 py-4 text-[#6B5D4D] text-xs font-normal tracking-[0.15em] uppercase">Company</th>
-                <th className="text-left px-5 py-4 text-[#6B5D4D] text-xs font-normal tracking-[0.15em] uppercase hidden sm:table-cell">Contact</th>
-                <th className="text-left px-5 py-4 text-[#6B5D4D] text-xs font-normal tracking-[0.15em] uppercase">Status</th>
-                <th className="px-5 py-4"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredLeads.map((lead, index) => (
-                <motion.tr
-                  key={lead.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: index * 0.02 }}
-                  className="border-b border-[#F5F1EB] hover:bg-[#F5F1EB]/50 cursor-pointer transition-colors"
-                  onClick={() => setSelectedLead(lead)}
-                >
-                  <td className="px-5 py-4">
-                    <p className="text-[#3D3225] text-sm">{lead.company_name}</p>
-                    <p className="text-[#9A8B78] text-xs mt-0.5 truncate max-w-[250px]">{lead.ai_pitch}</p>
-                  </td>
-                  <td className="px-5 py-4 hidden sm:table-cell">
-                    <p className="text-[#6B5D4D] text-sm">{lead.contact_email || '—'}</p>
-                  </td>
-                  <td className="px-5 py-4">
-                    <select
-                      value={lead.status}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        updateLeadStatus(lead.id, e.target.value);
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      className={`text-xs px-3 py-1.5 border-0 cursor-pointer tracking-wider uppercase ${
-                        statusOptions.find(s => s.key === lead.status)?.color || 'bg-gray-100'
-                      }`}
-                    >
-                      {statusOptions.map((status) => (
-                        <option key={status.key} value={status.key}>
-                          {status.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-5 py-4 text-right">
-                    <button 
-                      className="text-[#C9B99A] hover:text-[#3D3225] text-xs tracking-wider uppercase transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedLead(lead);
-                      }}
-                    >
-                      View →
-                    </button>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      {/* Lead Detail Modal */}
-      {selectedLead && (
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-6 relative">
+        {/* Subtle texture - NO z-index so it doesn't block inputs */}
         <div 
-          className="fixed inset-0 bg-[#3D3225]/60 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedLead(null)}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#FDFBF7] max-w-lg w-full max-h-[90vh] overflow-y-auto border border-[#E8E0D4]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="p-6 border-b border-[#E8E0D4]">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-1">{selectedLead.category}</p>
-                  <h2 className="font-serif text-xl text-[#3D3225] font-light">{selectedLead.company_name}</h2>
-                </div>
-                <button
-                  onClick={() => setSelectedLead(null)}
-                  className="text-[#9A8B78] hover:text-[#3D3225] text-xl transition-colors"
-                >
-                  ×
-                </button>
-              </div>
+          className="absolute inset-0 pointer-events-none opacity-[0.015]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        
+        <div className="relative max-w-md w-full z-10">
+          {/* Decorative frame */}
+          <div className="absolute -inset-4 border border-[#C9B99A]/20" />
+          
+          <div className="bg-[#FDFBF7] p-12 border border-[#E8E0D4]">
+            <div className="text-center mb-10">
+              <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-3">Private Access</p>
+              <h1 className="font-serif text-2xl text-[#3D3225] font-light">Partnership Engine</h1>
             </div>
             
-            <div className="p-6 space-y-6">
-              {/* Contact Info */}
-              <div className="space-y-3">
-                {selectedLead.contact_email && (
-                  <div>
-                    <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase">Email</label>
-                    <a href={`mailto:${selectedLead.contact_email}`} className="text-[#3D3225] block hover:text-[#C9B99A] transition-colors text-sm mt-1">
-                      {selectedLead.contact_email}
-                    </a>
-                  </div>
-                )}
-                {selectedLead.website && (
-                  <div>
-                    <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase">Website</label>
-                    <a href={selectedLead.website} target="_blank" rel="noopener noreferrer" className="text-[#3D3225] block hover:text-[#C9B99A] transition-colors truncate text-sm mt-1">
-                      {selectedLead.website}
-                    </a>
-                  </div>
-                )}
-              </div>
-
-              {/* AI Pitch */}
-              {selectedLead.ai_pitch && (
-                <div>
-                  <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-2 block">Why They're a Good Fit</label>
-                  <p className="text-[#3D3225] text-sm bg-[#F5F1EB] p-4 border border-[#E8E0D4]">
-                    {selectedLead.ai_pitch}
-                  </p>
-                </div>
-              )}
-
-              {/* Notes */}
-              {selectedLead.notes && (
-                <div>
-                  <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-2 block">Collaboration Idea</label>
-                  <p className="text-[#3D3225] text-sm bg-[#F5F1EB] p-4 border border-[#E8E0D4]">
-                    {selectedLead.notes}
-                  </p>
-                </div>
-              )}
-
-              {/* Status Update */}
+            <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-3 block">Update Status</label>
-                <div className="flex flex-wrap gap-2">
-                  {statusOptions.map((status) => (
-                    <button
-                      key={status.key}
-                      onClick={() => updateLeadStatus(selectedLead.id, status.key)}
-                      className={`px-4 py-2 text-xs tracking-[0.1em] uppercase transition-all ${
-                        selectedLead.status === status.key
-                          ? 'bg-[#3D3225] text-[#FDFBF7]'
-                          : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
-                      }`}
-                    >
-                      {status.label}
-                    </button>
-                  ))}
-                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full px-4 py-3 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] focus:outline-none focus:border-[#C9B99A] transition-colors text-center tracking-wider"
+                  autoFocus
+                />
               </div>
-
-              {/* Actions */}
-              <div className="flex gap-4 pt-4 border-t border-[#E8E0D4]">
-                <Link
-                  href={`/dashboard/emails?lead=${selectedLead.id}`}
-                  className="flex-1 text-center py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors"
-                >
-                  Write Email
-                </Link>
-                <button
-                  onClick={() => deleteLead(selectedLead.id)}
-                  className="px-6 py-3 text-[#9A8B78] hover:text-red-400 text-xs tracking-[0.1em] uppercase transition-colors"
-                >
-                  Delete
-                </button>
-              </div>
+              
+              {error && (
+                <p className="text-red-400 text-xs text-center tracking-wider">{error}</p>
+              )}
+              
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.2em] uppercase hover:bg-[#2A231A] transition-colors"
+              >
+                Enter
+              </button>
+            </form>
+            
+            <div className="mt-10 text-center">
+              <Link href="/" className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase hover:text-[#3D3225] transition-colors">
+                ← Return to site
+              </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#FDFBF7] relative">
+      {/* Subtle texture - NO z-index so it doesn't block inputs */}
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-[0.015]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Top Nav */}
+      <header className="bg-[#FDFBF7] border-b border-[#E8E0D4] sticky top-0 z-40">
+        <div className="px-8 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="font-serif text-lg text-[#3D3225] tracking-wide">
+              Michelle Choe
+            </Link>
+            <div className="w-[1px] h-4 bg-[#C9B99A]/40" />
+            <span className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase">Partnership Engine</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <Link 
+              href="/" 
+              className="text-[#9A8B78] hover:text-[#3D3225] text-xs tracking-[0.1em] uppercase transition-colors"
+            >
+              View Site
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-[#9A8B78] hover:text-[#3D3225] text-xs tracking-[0.1em] uppercase transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+        {/* Gold accent line */}
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-[#C9B99A] to-transparent opacity-30" />
+      </header>
+
+      <div className="flex relative z-10">
+        {/* Sidebar */}
+        <aside className="w-52 bg-[#F5F1EB] border-r border-[#E8E0D4] min-h-[calc(100vh-73px)] p-6">
+          <nav className="space-y-1">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`block px-4 py-3 text-xs tracking-[0.1em] uppercase transition-all ${
+                    isActive 
+                      ? 'bg-[#FDFBF7] text-[#3D3225] border-l-2 border-[#C9B99A]' 
+                      : 'text-[#6B5D4D] hover:text-[#3D3225] hover:bg-[#FDFBF7]/50 border-l-2 border-transparent'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 p-8">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
