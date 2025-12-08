@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
 
@@ -27,10 +27,12 @@ const tiktokVideos = [
   { video: '/videos/tiktok5.mov', thumbnail: '/videos/thumb5.jpg' },
 ];
 
-function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: string; isCenter: boolean }) {
+function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: string; position: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+
+  const isCenter = position === 0;
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -58,7 +60,7 @@ function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: s
   return (
     <div
       className={`relative aspect-[9/16] overflow-hidden bg-[#E8E0D4] transition-all duration-500 ${
-        isCenter ? 'scale-105 shadow-2xl z-10' : 'scale-95 opacity-80'
+        isCenter ? 'scale-110 shadow-2xl z-10' : 'scale-90 opacity-60'
       }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -125,7 +127,7 @@ function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: s
 }
 
 export default function HomePage() {
-  const [activeIndex, setActiveIndex] = useState(2); // Center video
+  const [activeIndex, setActiveIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -163,6 +165,23 @@ export default function HomePage() {
 
   const prevVideo = () => {
     setActiveIndex((prev) => (prev - 1 + tiktokVideos.length) % tiktokVideos.length);
+  };
+
+  // Get videos in order with active in center
+  const getOrderedVideos = () => {
+    const result = [];
+    const total = tiktokVideos.length;
+    
+    // Show 5 videos: -2, -1, 0 (center), +1, +2
+    for (let offset = -2; offset <= 2; offset++) {
+      const index = (activeIndex + offset + total) % total;
+      result.push({
+        ...tiktokVideos[index],
+        originalIndex: index,
+        position: offset, // -2, -1, 0, 1, 2
+      });
+    }
+    return result;
   };
 
   return (
@@ -369,32 +388,26 @@ export default function HomePage() {
               </button>
 
               {/* Carousel Container */}
-              <div className="flex justify-center items-center gap-4 px-16">
-                {tiktokVideos.map((item, index) => {
-                  // Calculate position relative to active
-                  const position = (index - activeIndex + tiktokVideos.length) % tiktokVideos.length;
-                  const isVisible = position <= 2 || position >= tiktokVideos.length - 2;
-                  const isCenter = position === 0;
-                  
-                  if (!isVisible) return null;
-                  
-                  return (
+              <div className="flex justify-center items-center gap-4 px-16 overflow-hidden">
+                <AnimatePresence mode="popLayout">
+                  {getOrderedVideos().map((item) => (
                     <motion.div
-                      key={index}
-                      className="w-48 flex-shrink-0 cursor-pointer"
-                      onClick={() => setActiveIndex(index)}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
+                      key={item.originalIndex}
+                      className="w-44 flex-shrink-0"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.3 }}
+                      layout
                     >
                       <VideoCard
                         video={item.video}
                         thumbnail={item.thumbnail}
-                        isCenter={isCenter}
+                        position={item.position}
                       />
                     </motion.div>
-                  );
-                })}
+                  ))}
+                </AnimatePresence>
               </div>
 
               {/* Dots indicator */}
