@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const brandPartners = [
   { name: 'Pottery Barn', logo: '/logos/potterybarn.png' },
@@ -27,52 +27,66 @@ const tiktokVideos = [
   { video: '/videos/tiktok5.mov', thumbnail: '/videos/thumb5.jpg' },
 ];
 
-function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: string; position: number }) {
+function VideoCard({ 
+  video, 
+  thumbnail, 
+  position, 
+  isPlaying,
+  onPlay,
+  onPause,
+  onSelect
+}: { 
+  video: string; 
+  thumbnail: string; 
+  position: number;
+  isPlaying: boolean;
+  onPlay: () => void;
+  onPause: () => void;
+  onSelect: () => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
-
   const isCenter = position === 0;
 
-  const handleMouseEnter = () => {
-    // Only auto-start on hover if not already playing
-    if (!isPlaying && videoRef.current) {
-      videoRef.current.muted = false;
-      videoRef.current.play();
-      setIsPlaying(true);
-      setHasStarted(true);
-    }
-  };
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  // Handle play/pause based on isPlaying prop
+  useEffect(() => {
     if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
+      if (isPlaying && isCenter) {
         videoRef.current.muted = false;
         videoRef.current.play();
-        setIsPlaying(true);
-        setHasStarted(true);
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
       }
+    }
+  }, [isPlaying, isCenter]);
+
+  const handleClick = () => {
+    if (isCenter) {
+      // Toggle play/pause for center video
+      if (isPlaying) {
+        onPause();
+      } else {
+        onPlay();
+      }
+    } else {
+      // Click on side video - move it to center
+      onSelect();
     }
   };
 
   return (
     <div
       className={`relative aspect-[9/16] overflow-hidden bg-[#E8E0D4] transition-all duration-500 cursor-pointer ${
-        isCenter ? 'scale-110 shadow-2xl z-10' : 'scale-90 opacity-60'
+        isCenter ? 'scale-110 shadow-2xl z-10' : 'scale-90 opacity-60 hover:opacity-80'
       }`}
-      onMouseEnter={handleMouseEnter}
       onClick={handleClick}
     >
-      {/* Thumbnail - shows when video hasn't started */}
+      {/* Thumbnail - shows when not playing */}
       <img
         src={thumbnail}
         alt="Video thumbnail"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-          hasStarted ? 'opacity-0' : 'opacity-100'
+          isPlaying && isCenter ? 'opacity-0' : 'opacity-100'
         }`}
       />
       
@@ -83,31 +97,31 @@ function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: s
         loop
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-          hasStarted ? 'opacity-100' : 'opacity-0'
+          isPlaying && isCenter ? 'opacity-100' : 'opacity-0'
         }`}
       />
 
-      {/* Play icon overlay (shows when not started or paused) */}
-      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-        !hasStarted || !isPlaying ? 'opacity-100' : 'opacity-0'
-      }`}>
-        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-          <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
+      {/* Play icon overlay (shows when not playing) */}
+      {(!isPlaying || !isCenter) && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
+            <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Pause indicator (shows briefly when playing) */}
-      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 pointer-events-none ${
-        isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-0'
-      }`}>
-        <div className="w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center">
-          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-          </svg>
+      {/* Pause overlay (shows on hover when playing) */}
+      {isPlaying && isCenter && (
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+          <div className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
+            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+            </svg>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* TikTok icon */}
       <div className="absolute bottom-3 right-3">
@@ -115,20 +129,13 @@ function VideoCard({ video, thumbnail, position }: { video: string; thumbnail: s
           <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
         </svg>
       </div>
-
-      {/* Playing indicator */}
-      {isPlaying && (
-        <div className="absolute top-3 left-3 flex items-center gap-1">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-          <span className="text-white text-xs font-medium drop-shadow-lg">LIVE</span>
-        </div>
-      )}
     </div>
   );
 }
 
 export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -161,11 +168,18 @@ export default function HomePage() {
   };
 
   const nextVideo = () => {
+    setIsPlaying(false); // Pause when navigating
     setActiveIndex((prev) => (prev + 1) % tiktokVideos.length);
   };
 
   const prevVideo = () => {
+    setIsPlaying(false); // Pause when navigating
     setActiveIndex((prev) => (prev - 1 + tiktokVideos.length) % tiktokVideos.length);
+  };
+
+  const selectVideo = (index: number) => {
+    setActiveIndex(index);
+    setIsPlaying(true); // Auto-play when selecting a new video
   };
 
   // Get videos in order with active in center
@@ -405,6 +419,10 @@ export default function HomePage() {
                         video={item.video}
                         thumbnail={item.thumbnail}
                         position={item.position}
+                        isPlaying={isPlaying && item.position === 0}
+                        onPlay={() => setIsPlaying(true)}
+                        onPause={() => setIsPlaying(false)}
+                        onSelect={() => selectVideo(item.originalIndex)}
                       />
                     </motion.div>
                   ))}
@@ -416,7 +434,10 @@ export default function HomePage() {
                 {tiktokVideos.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => {
+                      setIsPlaying(false);
+                      setActiveIndex(index);
+                    }}
                     className={`w-2 h-2 rounded-full transition-all ${
                       index === activeIndex ? 'bg-[#3D3225] w-6' : 'bg-[#D4C8B8]'
                     }`}
