@@ -30,6 +30,7 @@ const tiktokVideos = [
 function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: string; isCenter: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -43,6 +44,14 @@ function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: s
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(!isMuted);
     }
   };
 
@@ -67,7 +76,7 @@ function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: s
       <video
         ref={videoRef}
         src={video}
-        muted
+        muted={isMuted}
         loop
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
@@ -75,7 +84,7 @@ function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: s
         }`}
       />
 
-      {/* Play icon overlay */}
+      {/* Play icon overlay (shows when not hovering) */}
       <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
         isHovered ? 'opacity-0' : 'opacity-100'
       }`}>
@@ -85,6 +94,25 @@ function VideoCard({ video, thumbnail, isCenter }: { video: string; thumbnail: s
           </svg>
         </div>
       </div>
+
+      {/* Sound toggle button (shows when hovering) */}
+      <button
+        onClick={toggleMute}
+        className={`absolute bottom-3 left-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 hover:bg-black/60 ${
+          isHovered ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        {isMuted ? (
+          <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        ) : (
+          <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+        )}
+      </button>
 
       {/* TikTok icon */}
       <div className="absolute bottom-3 right-3">
@@ -384,7 +412,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* YouTube Video */}
+          {/* YouTube Video - Redesigned */}
           <div>
             <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-8">Long Form</p>
             <motion.div
@@ -392,19 +420,42 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative max-w-4xl"
+              className="grid md:grid-cols-2 gap-8 items-center"
             >
-              {/* Decorative frame */}
-              <div className="absolute -inset-3 border border-[#C9B99A]/20" />
-              
-              <div className="relative aspect-video bg-[#E8E0D4] overflow-hidden">
-                <iframe
-                  src="https://www.youtube.com/embed/1L3WDH6_KSM"
-                  title="YouTube video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
+              {/* Video - Left side, constrained size */}
+              <div className="relative">
+                <div className="absolute -inset-3 border border-[#C9B99A]/20" />
+                <div className="relative aspect-video bg-[#E8E0D4] overflow-hidden max-w-lg">
+                  <iframe
+                    src="https://www.youtube.com/embed/1L3WDH6_KSM"
+                    title="YouTube video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </div>
+              </div>
+
+              {/* Description - Right side */}
+              <div className="max-w-md">
+                <h3 className="font-serif text-2xl text-[#3D3225] font-light mb-4">
+                  Extreme Room Transformation
+                </h3>
+                <p className="text-[#6B5D4D] font-light leading-relaxed mb-6">
+                  A complete Pinterest-inspired room makeover featuring Love Shack Fancy bedding, 
+                  organization tips, and aesthetic decor finds. Watch the full transformation journey.
+                </p>
+                <a 
+                  href="https://www.youtube.com/watch?v=1L3WDH6_KSM"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#3D3225] text-xs tracking-[0.15em] uppercase border-b border-[#C9B99A] pb-1 hover:border-[#3D3225] transition-colors"
+                >
+                  Watch on YouTube
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
               </div>
             </motion.div>
           </div>
