@@ -201,17 +201,17 @@ export default function HomePage() {
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-[#FDFBF7]/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-          <Link href="/" className="font-serif text-xl tracking-wide text-[#3D3225]">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+          <Link href="/" className="font-serif text-lg md:text-xl tracking-wide text-[#3D3225]">
             Michelle Choe
           </Link>
-          <div className="flex gap-8 items-center">
-            <a href="#work" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
+          <div className="flex gap-4 md:gap-8 items-center">
+            <a href="#work" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] md:tracking-[0.2em] uppercase">
               Work
             </a>
             <a 
               href="#contact" 
-              className="px-5 py-2 bg-[#8B7355] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#6B5D4D] transition-all duration-300"
+              className="px-3 md:px-5 py-2 bg-[#8B7355] text-[#FDFBF7] text-xs tracking-[0.1em] md:tracking-[0.15em] uppercase hover:bg-[#6B5D4D] transition-all duration-300"
             >
               Collaborate
             </a>
@@ -221,32 +221,32 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section - Compact */}
-      <section className="pt-28 pb-12 px-8">
+      <section className="pt-24 md:pt-28 pb-12 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-center gap-24">
+          <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-10 lg:gap-24">
             {/* Left side - Text */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: 'easeOut' }}
               className="flex-1 max-w-md text-center"
             >
-              <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-4">
+              <p className="text-[#9A8B78] tracking-[0.2em] md:tracking-[0.3em] uppercase text-xs mb-4">
                 Lifestyle & Beauty Creator
               </p>
-              <h1 className="font-serif text-5xl lg:text-6xl text-[#3D3225] mb-6 leading-[1.1] font-light">
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#3D3225] mb-5 md:mb-6 leading-[1.1] font-light">
                 Michelle
                 <br />
                 <span className="italic">Choe</span>
               </h1>
-              <p className="text-[#6B5D4D] leading-relaxed mb-8 font-light">
+              <p className="text-[#6B5D4D] leading-relaxed mb-6 md:mb-8 font-light text-sm md:text-base px-4 md:px-0">
                 Crafting authentic narratives for brands seeking 
                 to connect with audiences who appreciate the 
                 art of elevated living.
               </p>
               
               {/* Stats - Inline */}
-              <div className="flex gap-8 justify-center">
+              <div className="flex gap-6 md:gap-8 justify-center">
                 {stats.map((stat, index) => (
                   <motion.div
                     key={stat.platform}
@@ -254,7 +254,7 @@ export default function HomePage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
                   >
-                    <p className="font-serif text-2xl text-[#3D3225] font-light">{stat.count}</p>
+                    <p className="font-serif text-xl md:text-2xl text-[#3D3225] font-light">{stat.count}</p>
                     <p className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase">{stat.platform}</p>
                   </motion.div>
                 ))}
@@ -269,13 +269,13 @@ export default function HomePage() {
               className="relative flex-shrink-0"
             >
               {/* Bronze/Gold mirror frame */}
-              <div className="relative w-80 h-80">
+              <div className="relative w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80">
                 {/* Outer bronze ring */}
                 <div 
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: 'linear-gradient(145deg, #D4A574 0%, #8B6914 25%, #C9A227 50%, #8B6914 75%, #D4A574 100%)',
-                    padding: '6px',
+                    padding: '5px',
                   }}
                 >
                   <div className="w-full h-full rounded-full bg-[#FDFBF7]" />
@@ -283,17 +283,17 @@ export default function HomePage() {
                 
                 {/* Inner bronze ring */}
                 <div 
-                  className="absolute inset-3 rounded-full"
+                  className="absolute inset-2 md:inset-3 rounded-full"
                   style={{
                     background: 'linear-gradient(145deg, #C9A227 0%, #8B6914 30%, #D4A574 50%, #8B6914 70%, #C9A227 100%)',
-                    padding: '4px',
+                    padding: '3px',
                   }}
                 >
                   <div className="w-full h-full rounded-full bg-[#FDFBF7]" />
                 </div>
                 
                 {/* Photo container */}
-                <div className="absolute inset-6 rounded-full overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,0.1)]">
+                <div className="absolute inset-4 md:inset-6 rounded-full overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,0.1)]">
                   <img 
                     src="/michelle-photo.jpg" 
                     alt="Michelle Choe"
@@ -354,14 +354,14 @@ export default function HomePage() {
       </section>
 
       {/* Featured Work Section - Video Carousel */}
-      <section id="work" className="py-16 px-8">
+      <section id="work" className="py-12 md:py-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="mb-10"
+            className="mb-8 md:mb-10 text-center md:text-left"
           >
             <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-3">Portfolio</p>
             <h2 className="font-serif text-3xl md:text-4xl text-[#3D3225] font-light">
@@ -370,13 +370,13 @@ export default function HomePage() {
           </motion.div>
 
           {/* TikTok Carousel */}
-          <div className="mb-16">
-            <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-6">Short Form</p>
+          <div className="mb-12 md:mb-16">
+            <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-6 text-center md:text-left">Short Form</p>
             
             <div className="relative">
               <button
                 onClick={prevVideo}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-10 h-10 bg-[#FDFBF7] border border-[#E8E0D4] flex items-center justify-center hover:border-[#C9B99A] transition-colors"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 md:-translate-x-4 bg-[#FDFBF7] border border-[#E8E0D4] flex items-center justify-center hover:border-[#C9B99A] transition-colors"
               >
                 <svg className="w-4 h-4 text-[#3D3225]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 19l-7-7 7-7" />
@@ -385,19 +385,19 @@ export default function HomePage() {
               
               <button
                 onClick={nextVideo}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-10 h-10 bg-[#FDFBF7] border border-[#E8E0D4] flex items-center justify-center hover:border-[#C9B99A] transition-colors"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 md:w-10 md:h-10 md:translate-x-4 bg-[#FDFBF7] border border-[#E8E0D4] flex items-center justify-center hover:border-[#C9B99A] transition-colors"
               >
                 <svg className="w-4 h-4 text-[#3D3225]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
 
-              <div className="flex justify-center items-center gap-3 px-12 overflow-hidden">
+              <div className="flex justify-center items-center gap-2 md:gap-3 px-10 md:px-12 overflow-hidden">
                 <AnimatePresence mode="popLayout">
                   {getOrderedVideos().map((item) => (
                     <motion.div
                       key={item.originalIndex}
-                      className="w-40 flex-shrink-0"
+                      className="w-24 md:w-40 flex-shrink-0"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
@@ -437,17 +437,17 @@ export default function HomePage() {
 
           {/* YouTube Video */}
           <div>
-            <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-6">Long Form</p>
+            <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-6 text-center md:text-left">Long Form</p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="flex gap-8 items-center"
+              className="flex flex-col md:flex-row gap-6 md:gap-8 items-center"
             >
-              <div className="relative flex-shrink-0">
-                <div className="absolute -inset-2 border border-[#C9B99A]/20" />
-                <div className="relative w-96 aspect-video bg-[#E8E0D4] overflow-hidden">
+              <div className="relative flex-shrink-0 w-full md:w-auto">
+                <div className="absolute -inset-2 border border-[#C9B99A]/20 hidden md:block" />
+                <div className="relative w-full md:w-96 aspect-video bg-[#E8E0D4] overflow-hidden">
                   <iframe
                     src="https://www.youtube.com/embed/1L3WDH6_KSM"
                     title="YouTube video"
@@ -458,7 +458,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="max-w-sm">
+              <div className="max-w-sm text-center md:text-left">
                 <h3 className="font-serif text-xl text-[#3D3225] font-light mb-3">
                   Extreme Room Transformation
                 </h3>
@@ -486,17 +486,17 @@ export default function HomePage() {
 
 
       {/* Contact Form - Compact */}
-      <section id="contact" className="py-16 px-8">
+      <section id="contact" className="py-12 md:py-16 px-4 md:px-8">
         <div className="max-w-xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-10"
+            className="text-center mb-8 md:mb-10"
           >
             <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-3">Get in Touch</p>
-            <h2 className="font-serif text-3xl text-[#3D3225] font-light">
+            <h2 className="font-serif text-2xl md:text-3xl text-[#3D3225] font-light">
               Let's <span className="italic">Collaborate</span>
             </h2>
           </motion.div>
@@ -585,16 +585,16 @@ export default function HomePage() {
       </section>
 
       {/* Footer - Compact */}
-      <footer className="py-8 px-8 border-t border-[#E8E0D4]">
+      <footer className="py-6 md:py-8 px-4 md:px-8 border-t border-[#E8E0D4]">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="font-serif text-lg text-[#3D3225] font-light tracking-wide">Michelle Choe</p>
-            <div className="flex gap-8">
+            <div className="flex gap-6 md:gap-8">
               <a 
                 href="https://www.youtube.com/c/MichelleChoe" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase"
+                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.1em] md:tracking-[0.15em] uppercase"
               >
                 YouTube
               </a>
@@ -602,7 +602,7 @@ export default function HomePage() {
                 href="https://www.instagram.com/_michellechoe/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase"
+                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.1em] md:tracking-[0.15em] uppercase"
               >
                 Instagram
               </a>
@@ -610,7 +610,7 @@ export default function HomePage() {
                 href="https://www.tiktok.com/@_michellechoe" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.15em] uppercase"
+                className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.1em] md:tracking-[0.15em] uppercase"
               >
                 TikTok
               </a>
