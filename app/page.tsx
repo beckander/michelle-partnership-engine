@@ -229,7 +229,7 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: 'easeOut' }}
-              className="flex-1 max-w-md"
+              className="flex-1 max-w-md text-center"
             >
               <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-4">
                 Lifestyle & Beauty Creator
@@ -239,14 +239,14 @@ export default function HomePage() {
                 <br />
                 <span className="italic">Choe</span>
               </h1>
-              <p className="text-[#6B5D4D] leading-relaxed mb-8 max-w-sm font-light">
+              <p className="text-[#6B5D4D] leading-relaxed mb-8 font-light">
                 Crafting authentic narratives for brands seeking 
                 to connect with audiences who appreciate the 
                 art of elevated living.
               </p>
               
               {/* Stats - Inline */}
-              <div className="flex gap-8">
+              <div className="flex gap-8 justify-center">
                 {stats.map((stat, index) => (
                   <motion.div
                     key={stat.platform}
