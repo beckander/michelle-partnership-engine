@@ -55,7 +55,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#FDFBF7] relative overflow-hidden">
       {/* Subtle texture overlay */}
       <div 
-        className="fixed inset-0 pointer-events-none opacity-[0.015] z-50"
+        className="fixed inset-0 pointer-events-none opacity-[0.015]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
@@ -68,9 +68,6 @@ export default function HomePage() {
             Michelle Choe
           </Link>
           <div className="flex gap-10 items-center">
-            <a href="#work" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
-              Work
-            </a>
             <a href="#brand-kit" className="text-[#6B5D4D] hover:text-[#3D3225] transition-colors text-xs tracking-[0.2em] uppercase">
               Press
             </a>
@@ -214,85 +211,8 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C9B99A] to-transparent opacity-30" />
       </section>
 
-      {/* Featured Work */}
-      <section id="work" className="py-28 px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mb-16"
-          >
-            <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-4">Portfolio</p>
-            <h2 className="font-serif text-4xl md:text-5xl text-[#3D3225] font-light">
-              Featured <span className="italic">Work</span>
-            </h2>
-          </motion.div>
-
-          {/* Asymmetrical Grid */}
-          <div className="grid grid-cols-12 gap-6">
-            {/* Large item */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="col-span-12 md:col-span-7 aspect-[4/3] bg-gradient-to-br from-[#E8E0D4] to-[#D4C8B8] relative group cursor-pointer overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-[#3D3225]/0 group-hover:bg-[#3D3225]/20 transition-all duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <span className="text-[#FDFBF7] text-xs tracking-[0.2em] uppercase">Coming Soon</span>
-              </div>
-            </motion.div>
-
-            {/* Small item */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="col-span-12 md:col-span-5 aspect-[4/3] bg-gradient-to-br from-[#D4C8B8] to-[#C9B99A] relative group cursor-pointer overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-[#3D3225]/0 group-hover:bg-[#3D3225]/20 transition-all duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <span className="text-[#FDFBF7] text-xs tracking-[0.2em] uppercase">Coming Soon</span>
-              </div>
-            </motion.div>
-
-            {/* Small item */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="col-span-12 md:col-span-5 aspect-[4/3] bg-gradient-to-br from-[#C9B99A] to-[#B8A888] relative group cursor-pointer overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-[#3D3225]/0 group-hover:bg-[#3D3225]/20 transition-all duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <span className="text-[#FDFBF7] text-xs tracking-[0.2em] uppercase">Coming Soon</span>
-              </div>
-            </motion.div>
-
-            {/* Large item */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="col-span-12 md:col-span-7 aspect-[4/3] bg-gradient-to-br from-[#E8E0D4] to-[#D4C8B8] relative group cursor-pointer overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-[#3D3225]/0 group-hover:bg-[#3D3225]/20 transition-all duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <span className="text-[#FDFBF7] text-xs tracking-[0.2em] uppercase">Coming Soon</span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Brand Kit Section */}
-      <section id="brand-kit" className="py-28 px-8 bg-[#F5F1EB]">
+      <section id="brand-kit" className="py-28 px-8">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -337,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Form */}
-      <section id="contact" className="py-28 px-8">
+      <section id="contact" className="py-28 px-8 bg-[#F5F1EB]">
         <div className="max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -356,7 +276,7 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-16 border border-[#E8E0D4]"
+              className="text-center py-16 border border-[#E8E0D4] bg-[#FDFBF7]"
             >
               <div className="w-16 h-16 mx-auto mb-6 border border-[#C9B99A] flex items-center justify-center">
                 <svg className="w-6 h-6 text-[#C9B99A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -436,7 +356,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-8 border-t border-[#E8E0D4]">
+      <footer className="py-16 px-8 border-t border-[#E8E0D4] bg-[#FDFBF7]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <p className="font-serif text-xl text-[#3D3225] font-light tracking-wide">Michelle Choe</p>

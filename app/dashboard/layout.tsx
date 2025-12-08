@@ -59,16 +59,16 @@ export default function DashboardLayout({
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-6">
-        {/* Subtle texture */}
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-6 relative">
+        {/* Subtle texture - NO z-index so it doesn't block inputs */}
         <div 
-          className="fixed inset-0 pointer-events-none opacity-[0.015]"
+          className="absolute inset-0 pointer-events-none opacity-[0.015]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
         
-        <div className="relative max-w-md w-full">
+        <div className="relative max-w-md w-full z-10">
           {/* Decorative frame */}
           <div className="absolute -inset-4 border border-[#C9B99A]/20" />
           
@@ -85,7 +85,7 @@ export default function DashboardLayout({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-[#D4C8B8] text-[#3D3225] placeholder:text-[#B8A888] focus:outline-none focus:border-[#C9B99A] transition-colors text-center tracking-wider"
+                  className="w-full px-4 py-3 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] focus:outline-none focus:border-[#C9B99A] transition-colors text-center tracking-wider"
                   autoFocus
                 />
               </div>
@@ -114,10 +114,10 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
-      {/* Subtle texture */}
+    <div className="min-h-screen bg-[#FDFBF7] relative">
+      {/* Subtle texture - NO z-index so it doesn't block inputs */}
       <div 
-        className="fixed inset-0 pointer-events-none opacity-[0.015] z-50"
+        className="fixed inset-0 pointer-events-none opacity-[0.015]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
@@ -152,7 +152,7 @@ export default function DashboardLayout({
         <div className="h-[1px] bg-gradient-to-r from-transparent via-[#C9B99A] to-transparent opacity-30" />
       </header>
 
-      <div className="flex">
+      <div className="flex relative z-10">
         {/* Sidebar */}
         <aside className="w-52 bg-[#F5F1EB] border-r border-[#E8E0D4] min-h-[calc(100vh-73px)] p-6">
           <nav className="space-y-1">
