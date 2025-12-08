@@ -107,20 +107,30 @@ export default function ImportLeadsPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-green-50 rounded-2xl p-8 text-center"
+          className="border border-[#E8E0D4] p-12 text-center bg-[#FDFBF7]"
         >
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="font-serif text-2xl text-taupe-700 mb-2">
-            Successfully Imported {importCount} Leads!
+          <div className="w-16 h-16 mx-auto mb-6 border border-[#C9B99A] flex items-center justify-center">
+            <svg className="w-6 h-6 text-[#C9B99A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="font-serif text-2xl text-[#3D3225] mb-2 font-light">
+            {importCount} Leads Imported
           </h2>
-          <p className="text-taupe-500 mb-6">
-            Your new leads are ready in the pipeline.
+          <p className="text-[#6B5D4D] mb-8 text-sm">
+            Your leads are ready in the pipeline.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href="/dashboard" className="btn btn-primary">
+            <Link 
+              href="/dashboard" 
+              className="px-6 py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors"
+            >
               View Pipeline
             </Link>
-            <button onClick={resetForm} className="btn btn-secondary">
+            <button 
+              onClick={resetForm} 
+              className="px-6 py-3 bg-[#F5F1EB] text-[#6B5D4D] text-xs tracking-[0.15em] uppercase hover:bg-[#E8E0D4] transition-colors"
+            >
               Import More
             </button>
           </div>
@@ -130,23 +140,25 @@ export default function ImportLeadsPage() {
   }
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-3xl">
       <div className="mb-8">
-        <h1 className="font-serif text-3xl text-taupe-700 mb-2">Import Leads</h1>
-        <p className="text-taupe-500">
+        <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-2">Import</p>
+        <h1 className="font-serif text-2xl text-[#3D3225] font-light">Import Leads</h1>
+        <p className="text-[#6B5D4D] text-sm mt-2">
           Paste the JSON response from ChatGPT to add leads to your pipeline.
         </p>
       </div>
 
+      {/* Steps indicator */}
       <div className="flex items-center gap-4 mb-8">
-        <div className={`flex items-center gap-2 ${!parsedLeads.length ? 'text-taupe-700' : 'text-taupe-400'}`}>
-          <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${!parsedLeads.length ? 'bg-taupe-600 text-cream-50' : 'bg-cream-200'}`}>1</span>
-          <span className="text-sm font-medium">Paste JSON</span>
+        <div className={`flex items-center gap-3 ${!parsedLeads.length ? 'text-[#3D3225]' : 'text-[#B8A888]'}`}>
+          <span className={`w-8 h-8 flex items-center justify-center text-xs ${!parsedLeads.length ? 'bg-[#3D3225] text-[#FDFBF7]' : 'bg-[#E8E0D4] text-[#6B5D4D]'}`}>1</span>
+          <span className="text-xs tracking-[0.1em] uppercase">Paste JSON</span>
         </div>
-        <div className="flex-1 h-px bg-cream-300"></div>
-        <div className={`flex items-center gap-2 ${parsedLeads.length && !imported ? 'text-taupe-700' : 'text-taupe-400'}`}>
-          <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${parsedLeads.length && !imported ? 'bg-taupe-600 text-cream-50' : 'bg-cream-200'}`}>2</span>
-          <span className="text-sm font-medium">Review & Import</span>
+        <div className="flex-1 h-[1px] bg-[#E8E0D4]"></div>
+        <div className={`flex items-center gap-3 ${parsedLeads.length && !imported ? 'text-[#3D3225]' : 'text-[#B8A888]'}`}>
+          <span className={`w-8 h-8 flex items-center justify-center text-xs ${parsedLeads.length && !imported ? 'bg-[#3D3225] text-[#FDFBF7]' : 'bg-[#E8E0D4] text-[#6B5D4D]'}`}>2</span>
+          <span className="text-xs tracking-[0.1em] uppercase">Review & Import</span>
         </div>
       </div>
 
@@ -155,9 +167,9 @@ export default function ImportLeadsPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="bg-cream-100 rounded-2xl p-6 mb-4">
-            <label className="text-taupe-600 text-sm mb-2 block font-medium">
-              Paste ChatGPT's JSON response:
+          <div className="border border-[#E8E0D4] p-6 mb-4 bg-[#FDFBF7]">
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">
+              Paste ChatGPT's JSON Response
             </label>
             <textarea
               value={jsonInput}
@@ -170,35 +182,35 @@ Example format:
   {
     "company_name": "Brand Name",
     "website": "https://example.com",
-    "contact_email": "pr@example.com",
+    "contact_email": "partnerships@example.com",
     "category": "skincare",
     "socials": { "instagram": "@brand" },
     "why_good_fit": "Great aesthetic match",
     "suggested_collab": "Product review"
   }
 ]`}
-              className="w-full px-4 py-3 rounded-xl bg-cream-50 border border-cream-300 text-taupe-700 placeholder:text-taupe-400 font-mono text-sm resize-none"
+              className="w-full px-4 py-3 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] font-mono text-sm resize-none focus:outline-none focus:border-[#C9B99A] transition-colors"
             />
           </div>
 
           {parseError && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-              <p className="text-red-600 text-sm">⚠️ {parseError}</p>
+            <div className="border border-red-200 bg-red-50 p-4 mb-4">
+              <p className="text-red-600 text-sm">{parseError}</p>
             </div>
           )}
 
           <button
             onClick={parseInput}
             disabled={!jsonInput.trim()}
-            className="btn btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Parse & Preview Leads
           </button>
 
-          <div className="mt-6 p-4 bg-blush-100 rounded-xl">
-            <p className="text-taupe-600 text-sm">
-              💡 <strong>Tip:</strong> Don't have leads yet?{' '}
-              <Link href="/dashboard/find-leads" className="text-taupe-700 underline">
+          <div className="mt-6 p-4 bg-[#F5F1EB] border border-[#E8E0D4]">
+            <p className="text-[#6B5D4D] text-sm">
+              Don't have leads yet?{' '}
+              <Link href="/dashboard/find-leads" className="text-[#3D3225] border-b border-[#C9B99A]">
                 Generate a prompt first
               </Link>
             </p>
@@ -211,14 +223,14 @@ Example format:
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="bg-cream-100 rounded-2xl p-6 mb-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-serif text-xl text-taupe-700">
+          <div className="border border-[#E8E0D4] p-6 mb-4 bg-[#FDFBF7]">
+            <div className="flex justify-between items-center mb-5">
+              <h3 className="text-[#3D3225] text-xs tracking-[0.15em] uppercase">
                 Preview: {parsedLeads.length} Leads
               </h3>
               <button
                 onClick={resetForm}
-                className="text-taupe-500 hover:text-taupe-700 text-sm"
+                className="text-[#9A8B78] hover:text-[#3D3225] text-xs tracking-wider uppercase transition-colors"
               >
                 ← Start Over
               </button>
@@ -228,39 +240,42 @@ Example format:
               {parsedLeads.map((lead, index) => (
                 <div
                   key={index}
-                  className="bg-cream-50 rounded-xl p-4 flex justify-between items-start"
+                  className="bg-[#F5F1EB] p-4 flex justify-between items-start border border-[#E8E0D4]"
                 >
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-medium text-taupe-700">{lead.company_name}</h4>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-cream-200 text-taupe-500">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h4 className="text-[#3D3225] text-sm">{lead.company_name}</h4>
+                      <span className="text-xs px-2 py-0.5 bg-[#E8E0D4] text-[#6B5D4D] tracking-wider uppercase">
                         {lead.category}
                       </span>
                     </div>
                     {lead.website && (
-                      <p className="text-taupe-500 text-sm truncate">{lead.website}</p>
+                      <p className="text-[#9A8B78] text-xs truncate">{lead.website}</p>
                     )}
                     {lead.contact_email && (
-                      <p className="text-taupe-500 text-sm">{lead.contact_email}</p>
+                      <p className="text-[#9A8B78] text-xs">{lead.contact_email}</p>
                     )}
                     {lead.why_good_fit && (
-                      <p className="text-taupe-400 text-xs mt-2 line-clamp-2">{lead.why_good_fit}</p>
+                      <p className="text-[#6B5D4D] text-xs mt-2 line-clamp-2">{lead.why_good_fit}</p>
                     )}
-                  </div>
-                  <div className="text-right text-xs text-taupe-400">
-                    {lead.socials?.instagram && <p>{lead.socials.instagram}</p>}
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
+          {parseError && (
+            <div className="border border-red-200 bg-red-50 p-4 mb-4">
+              <p className="text-red-600 text-sm">{parseError}</p>
+            </div>
+          )}
+
           <button
             onClick={importLeads}
             disabled={importing}
-            className="btn btn-primary w-full disabled:opacity-50"
+            className="w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {importing ? 'Importing...' : `Import ${parsedLeads.length} Leads to Pipeline`}
+            {importing ? 'Importing...' : `Import ${parsedLeads.length} Leads`}
           </button>
         </motion.div>
       )}

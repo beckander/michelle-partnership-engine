@@ -16,11 +16,11 @@ const categories = [
 ];
 
 const quickSearches = [
-  { label: 'DTC Skincare Brands', query: 'DTC skincare brands' },
-  { label: 'Home Decor Companies', query: 'home decor lifestyle brands' },
-  { label: 'Clean Beauty Brands', query: 'clean beauty brands' },
-  { label: 'Wellness & Self-Care', query: 'wellness self-care brands' },
-  { label: 'Cozy Lifestyle Brands', query: 'cozy lifestyle aesthetic brands' },
+  { label: 'DTC Skincare', query: 'DTC skincare brands' },
+  { label: 'Home Decor', query: 'home decor lifestyle brands' },
+  { label: 'Clean Beauty', query: 'clean beauty brands' },
+  { label: 'Wellness', query: 'wellness self-care brands' },
+  { label: 'Luxury Lifestyle', query: 'luxury lifestyle aesthetic brands' },
 ];
 
 export default function FindLeadsPage() {
@@ -139,35 +139,36 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
   };
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-3xl">
       <div className="mb-8">
-        <h1 className="font-serif text-2xl text-[#5C4D3C] mb-2">Find New Leads</h1>
-        <p className="text-[#9A8B78]">
+        <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-2">Lead Generation</p>
+        <h1 className="font-serif text-2xl text-[#3D3225] font-light">Find New Leads</h1>
+        <p className="text-[#6B5D4D] text-sm mt-2">
           Generate a prompt, paste it into ChatGPT, then import the results.
         </p>
       </div>
 
       {/* Search Type Toggle */}
-      <div className="flex gap-2 mb-8">
+      <div className="flex gap-3 mb-8">
         <button
           onClick={() => setSearchType('discover')}
-          className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all ${
+          className={`px-5 py-2.5 text-xs tracking-[0.1em] uppercase transition-all ${
             searchType === 'discover'
-              ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-              : 'bg-[#E8DFD0] text-[#5C4D3C] hover:bg-[#D4C4A8]'
+              ? 'bg-[#3D3225] text-[#FDFBF7]'
+              : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
           }`}
         >
           Discover Brands
         </button>
         <button
           onClick={() => setSearchType('competitor')}
-          className={`px-5 py-2.5 rounded-lg font-medium text-sm transition-all ${
+          className={`px-5 py-2.5 text-xs tracking-[0.1em] uppercase transition-all ${
             searchType === 'competitor'
-              ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-              : 'bg-[#E8DFD0] text-[#5C4D3C] hover:bg-[#D4C4A8]'
+              ? 'bg-[#3D3225] text-[#FDFBF7]'
+              : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
           }`}
         >
-          Find Similar Brands
+          Similar Brands
         </button>
       </div>
 
@@ -176,13 +177,13 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#F0E9DD] rounded-xl p-6 mb-6"
+          className="border border-[#E8E0D4] p-6 mb-6 bg-[#FDFBF7]"
         >
-          <h3 className="font-serif text-lg text-[#5C4D3C] mb-4">Brand Discovery</h3>
+          <h3 className="text-[#3D3225] text-xs tracking-[0.15em] uppercase mb-5">Brand Discovery</h3>
           
           {/* Quick Searches */}
           <div className="mb-6">
-            <label className="text-[#9A8B78] text-sm mb-2 block">Quick searches:</label>
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">Quick Searches</label>
             <div className="flex flex-wrap gap-2">
               {quickSearches.map((search) => (
                 <button
@@ -191,10 +192,10 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
                     setCustomQuery(search.query);
                     setCategory('');
                   }}
-                  className={`px-4 py-2 rounded-lg text-sm transition-all ${
+                  className={`px-4 py-2 text-xs tracking-wider transition-all ${
                     customQuery === search.query
-                      ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-                      : 'bg-[#FAF7F2] text-[#5C4D3C] hover:bg-[#E8DFD0]'
+                      ? 'bg-[#3D3225] text-[#FDFBF7]'
+                      : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
                   }`}
                 >
                   {search.label}
@@ -204,15 +205,15 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
           </div>
 
           {/* Category Dropdown */}
-          <div className="mb-4">
-            <label className="text-[#9A8B78] text-sm mb-2 block">Or select a category:</label>
+          <div className="mb-5">
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">Or Select Category</label>
             <select
               value={category}
               onChange={(e) => {
                 setCategory(e.target.value);
                 setCustomQuery('');
               }}
-              className="w-full px-4 py-3 rounded-lg bg-[#FAF7F2] border border-[#E8DFD0] text-[#5C4D3C] focus:outline-none focus:border-[#D4C4A8]"
+              className="w-full px-4 py-3 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] focus:outline-none focus:border-[#C9B99A] transition-colors text-sm"
             >
               <option value="">Select category...</option>
               {categories.map((cat) => (
@@ -222,8 +223,8 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
           </div>
 
           {/* Custom Query */}
-          <div className="mb-4">
-            <label className="text-[#9A8B78] text-sm mb-2 block">Or enter custom search:</label>
+          <div className="mb-5">
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">Or Custom Search</label>
             <input
               type="text"
               value={customQuery}
@@ -232,29 +233,29 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
                 setCategory('');
               }}
               placeholder="e.g., sustainable home goods brands, Korean skincare..."
-              className="w-full px-4 py-3 rounded-lg bg-[#FAF7F2] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] focus:outline-none focus:border-[#D4C4A8]"
+              className="w-full px-4 py-3 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] focus:outline-none focus:border-[#C9B99A] transition-colors text-sm"
             />
           </div>
 
           {/* Lead Count */}
           <div className="mb-6">
-            <label className="text-[#9A8B78] text-sm mb-2 block">Number of leads: {leadCount}</label>
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">Number of Leads: {leadCount}</label>
             <input
               type="range"
               min="10"
               max="50"
               value={leadCount}
               onChange={(e) => setLeadCount(parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-[#C9B99A]"
             />
           </div>
 
           <button
             onClick={generateDiscoveryPrompt}
             disabled={!category && !customQuery}
-            className="w-full py-3 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg hover:bg-[#4A3D2F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Generate Prompt for ChatGPT
+            Generate Prompt
           </button>
         </motion.div>
       )}
@@ -264,25 +265,25 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#F0E9DD] rounded-xl p-6 mb-6"
+          className="border border-[#E8E0D4] p-6 mb-6 bg-[#FDFBF7]"
         >
-          <h3 className="font-serif text-lg text-[#5C4D3C] mb-4">Find Similar Brands</h3>
-          <p className="text-[#9A8B78] text-sm mb-4">
-            Enter a brand you love or have worked with, and find similar companies.
+          <h3 className="text-[#3D3225] text-xs tracking-[0.15em] uppercase mb-2">Find Similar Brands</h3>
+          <p className="text-[#9A8B78] text-sm mb-5">
+            Enter a brand you love and find similar companies.
           </p>
 
           {/* Past Partners Quick Select */}
-          <div className="mb-4">
-            <label className="text-[#9A8B78] text-sm mb-2 block">Your past partners:</label>
+          <div className="mb-5">
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">Your Past Partners</label>
             <div className="flex flex-wrap gap-2">
               {['Pottery Barn', 'Armani Beauty', 'Notion', 'Target', 'Princess Polly'].map((brand) => (
                 <button
                   key={brand}
                   onClick={() => setCompetitorBrand(brand)}
-                  className={`px-4 py-2 rounded-lg text-sm transition-all ${
+                  className={`px-4 py-2 text-xs tracking-wider transition-all ${
                     competitorBrand === brand
-                      ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-                      : 'bg-[#FAF7F2] text-[#5C4D3C] hover:bg-[#E8DFD0]'
+                      ? 'bg-[#3D3225] text-[#FDFBF7]'
+                      : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
                   }`}
                 >
                   {brand}
@@ -292,22 +293,22 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
           </div>
 
           <div className="mb-6">
-            <label className="text-[#9A8B78] text-sm mb-2 block">Or enter any brand:</label>
+            <label className="text-[#9A8B78] text-xs tracking-[0.1em] uppercase mb-3 block">Or Enter Any Brand</label>
             <input
               type="text"
               value={competitorBrand}
               onChange={(e) => setCompetitorBrand(e.target.value)}
               placeholder="e.g., Glossier, West Elm, Aesop..."
-              className="w-full px-4 py-3 rounded-lg bg-[#FAF7F2] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] focus:outline-none focus:border-[#D4C4A8]"
+              className="w-full px-4 py-3 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] focus:outline-none focus:border-[#C9B99A] transition-colors text-sm"
             />
           </div>
 
           <button
             onClick={generateCompetitorPrompt}
             disabled={!competitorBrand}
-            className="w-full py-3 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg hover:bg-[#4A3D2F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Generate Prompt for ChatGPT
+            Generate Prompt
           </button>
         </motion.div>
       )}
@@ -317,37 +318,37 @@ Return ONLY the JSON array, no other text. Make sure it's valid JSON.`;
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#FAF7F2] border border-[#E8DFD0] rounded-xl p-6"
+          className="border border-[#E8E0D4] p-6 bg-[#FDFBF7]"
         >
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-serif text-lg text-[#5C4D3C]">Your ChatGPT Prompt</h3>
+            <h3 className="text-[#3D3225] text-xs tracking-[0.15em] uppercase">Your ChatGPT Prompt</h3>
             <button
               onClick={copyPrompt}
-              className="px-4 py-2 bg-[#E8DFD0] text-[#5C4D3C] rounded-lg text-sm hover:bg-[#D4C4A8] transition-colors"
+              className="px-4 py-2 bg-[#F5F1EB] text-[#6B5D4D] text-xs tracking-wider hover:bg-[#E8E0D4] transition-colors"
             >
-              {copied ? 'Copied!' : 'Copy Prompt'}
+              {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
 
-          <div className="bg-[#F0E9DD] rounded-lg p-4 max-h-64 overflow-y-auto mb-6">
-            <pre className="text-[#5C4D3C] text-sm whitespace-pre-wrap font-sans">
+          <div className="bg-[#F5F1EB] p-4 max-h-64 overflow-y-auto mb-6 border border-[#E8E0D4]">
+            <pre className="text-[#3D3225] text-xs whitespace-pre-wrap font-sans leading-relaxed">
               {generatedPrompt}
             </pre>
           </div>
 
-          <div className="bg-[#E8DFD0] rounded-lg p-4 mb-4">
-            <h4 className="font-medium text-[#5C4D3C] mb-2">Instructions:</h4>
-            <ol className="text-[#7D6D5A] text-sm space-y-1">
+          <div className="bg-[#F5F1EB] p-4 mb-5 border border-[#E8E0D4]">
+            <h4 className="text-[#3D3225] text-xs tracking-[0.1em] uppercase mb-3">Instructions</h4>
+            <ol className="text-[#6B5D4D] text-sm space-y-1.5">
               <li>1. Copy the prompt above</li>
-              <li>2. Open <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" className="text-[#5C4D3C] underline">ChatGPT</a> and paste it</li>
+              <li>2. Open <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" className="text-[#3D3225] border-b border-[#C9B99A]">ChatGPT</a> and paste it</li>
               <li>3. Copy ChatGPT's JSON response</li>
-              <li>4. Go to <Link href="/dashboard/import" className="text-[#5C4D3C] underline">Import Leads</Link> and paste it</li>
+              <li>4. Go to <Link href="/dashboard/import" className="text-[#3D3225] border-b border-[#C9B99A]">Import Leads</Link> and paste it</li>
             </ol>
           </div>
 
           <Link
             href="/dashboard/import"
-            className="block w-full py-3 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg text-center hover:bg-[#4A3D2F] transition-colors"
+            className="block w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-center text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors"
           >
             Go to Import Leads →
           </Link>

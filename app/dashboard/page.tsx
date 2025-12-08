@@ -20,13 +20,13 @@ interface Lead {
 }
 
 const statusOptions = [
-  { key: 'new', label: 'New', color: 'bg-[#E8DFD0] text-[#5C4D3C]' },
-  { key: 'contacted', label: 'Contacted', color: 'bg-blue-100 text-blue-700' },
-  { key: 'replied', label: 'Replied', color: 'bg-orange-100 text-orange-700' },
-  { key: 'negotiating', label: 'Negotiating', color: 'bg-yellow-100 text-yellow-700' },
-  { key: 'contract_sent', label: 'Contract Sent', color: 'bg-purple-100 text-purple-700' },
-  { key: 'closed_won', label: 'Won', color: 'bg-green-100 text-green-700' },
-  { key: 'dead', label: 'Dead', color: 'bg-gray-100 text-gray-500' },
+  { key: 'new', label: 'New', color: 'bg-[#F5F1EB] text-[#3D3225]' },
+  { key: 'contacted', label: 'Contacted', color: 'bg-[#E8E0D4] text-[#3D3225]' },
+  { key: 'replied', label: 'Replied', color: 'bg-[#D4C8B8] text-[#3D3225]' },
+  { key: 'negotiating', label: 'Negotiating', color: 'bg-[#C9B99A] text-[#3D3225]' },
+  { key: 'contract_sent', label: 'Contract', color: 'bg-[#B8A888] text-white' },
+  { key: 'closed_won', label: 'Won', color: 'bg-[#3D3225] text-[#FDFBF7]' },
+  { key: 'dead', label: 'Closed', color: 'bg-[#9A8B78] text-white' },
 ];
 
 export default function PipelinePage() {
@@ -104,7 +104,7 @@ export default function PipelinePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <div className="text-[#9A8B78]">Loading pipeline...</div>
+        <div className="text-[#9A8B78] text-sm tracking-wider">Loading...</div>
       </div>
     );
   }
@@ -112,26 +112,24 @@ export default function PipelinePage() {
   return (
     <div className="max-w-5xl">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="font-serif text-2xl text-[#5C4D3C] mb-1">Partnership Pipeline</h1>
-          <p className="text-[#9A8B78] text-sm">
-            {leads.length} total leads · {counts.closed_won || 0} won
+          <p className="text-[#9A8B78] tracking-[0.2em] uppercase text-xs mb-2">Overview</p>
+          <h1 className="font-serif text-2xl text-[#3D3225] font-light">Partnership Pipeline</h1>
+          <p className="text-[#9A8B78] text-sm mt-1">
+            {leads.length} leads · {counts.closed_won || 0} won
           </p>
         </div>
         <Link
           href="/dashboard/find-leads"
-          className="px-5 py-2.5 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg text-sm hover:bg-[#4A3D2F] transition-colors flex items-center gap-2"
+          className="px-6 py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
           Find New Leads
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="bg-[#F0E9DD] rounded-xl p-4 mb-6">
+      <div className="border border-[#E8E0D4] p-5 mb-6 bg-[#FDFBF7]">
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
@@ -140,7 +138,7 @@ export default function PipelinePage() {
               placeholder="Search leads..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg bg-[#FAF7F2] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] text-sm focus:outline-none focus:border-[#D4C4A8]"
+              className="w-full px-4 py-2.5 bg-[#F5F1EB] border border-[#E8E0D4] text-[#3D3225] placeholder:text-[#B8A888] text-sm focus:outline-none focus:border-[#C9B99A] transition-colors"
             />
           </div>
           
@@ -148,10 +146,10 @@ export default function PipelinePage() {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setFilterStatus('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`px-4 py-2 text-xs tracking-[0.1em] uppercase transition-all ${
                 filterStatus === 'all'
-                  ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-                  : 'bg-[#FAF7F2] text-[#7D6D5A] hover:bg-[#E8DFD0]'
+                  ? 'bg-[#3D3225] text-[#FDFBF7]'
+                  : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
               }`}
             >
               All ({counts.all})
@@ -160,10 +158,10 @@ export default function PipelinePage() {
               <button
                 key={status.key}
                 onClick={() => setFilterStatus(status.key)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`px-4 py-2 text-xs tracking-[0.1em] uppercase transition-all ${
                   filterStatus === status.key
-                    ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-                    : 'bg-[#FAF7F2] text-[#7D6D5A] hover:bg-[#E8DFD0]'
+                    ? 'bg-[#3D3225] text-[#FDFBF7]'
+                    : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
                 }`}
               >
                 {status.label} ({counts[status.key] || 0})
@@ -174,28 +172,28 @@ export default function PipelinePage() {
       </div>
 
       {/* Leads Table */}
-      <div className="bg-[#FAF7F2] rounded-xl border border-[#E8DFD0] overflow-hidden">
+      <div className="border border-[#E8E0D4] bg-[#FDFBF7]">
         {filteredLeads.length === 0 ? (
-          <div className="text-center py-12 text-[#9A8B78]">
+          <div className="text-center py-16 text-[#9A8B78]">
             {leads.length === 0 ? (
               <>
-                <p className="mb-4">No leads yet</p>
-                <Link href="/dashboard/find-leads" className="text-[#5C4D3C] underline">
-                  Find your first leads →
+                <p className="mb-4 text-sm">No leads yet</p>
+                <Link href="/dashboard/find-leads" className="text-[#3D3225] text-xs tracking-[0.1em] uppercase border-b border-[#3D3225] pb-0.5 hover:border-[#C9B99A] hover:text-[#C9B99A] transition-colors">
+                  Find your first leads
                 </Link>
               </>
             ) : (
-              <p>No leads match your filter</p>
+              <p className="text-sm">No leads match your filter</p>
             )}
           </div>
         ) : (
           <table className="w-full">
-            <thead className="bg-[#F0E9DD] border-b border-[#E8DFD0]">
-              <tr>
-                <th className="text-left px-4 py-3 text-[#7D6D5A] text-xs font-medium uppercase tracking-wide">Company</th>
-                <th className="text-left px-4 py-3 text-[#7D6D5A] text-xs font-medium uppercase tracking-wide hidden sm:table-cell">Email</th>
-                <th className="text-left px-4 py-3 text-[#7D6D5A] text-xs font-medium uppercase tracking-wide">Status</th>
-                <th className="px-4 py-3"></th>
+            <thead className="border-b border-[#E8E0D4]">
+              <tr className="bg-[#F5F1EB]">
+                <th className="text-left px-5 py-4 text-[#6B5D4D] text-xs font-normal tracking-[0.15em] uppercase">Company</th>
+                <th className="text-left px-5 py-4 text-[#6B5D4D] text-xs font-normal tracking-[0.15em] uppercase hidden sm:table-cell">Contact</th>
+                <th className="text-left px-5 py-4 text-[#6B5D4D] text-xs font-normal tracking-[0.15em] uppercase">Status</th>
+                <th className="px-5 py-4"></th>
               </tr>
             </thead>
             <tbody>
@@ -205,17 +203,17 @@ export default function PipelinePage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: index * 0.02 }}
-                  className="border-b border-[#F0E9DD] hover:bg-[#F0E9DD]/50 cursor-pointer"
+                  className="border-b border-[#F5F1EB] hover:bg-[#F5F1EB]/50 cursor-pointer transition-colors"
                   onClick={() => setSelectedLead(lead)}
                 >
-                  <td className="px-4 py-3">
-                    <p className="font-medium text-[#5C4D3C] text-sm">{lead.company_name}</p>
-                    <p className="text-[#9A8B78] text-xs truncate max-w-[200px]">{lead.ai_pitch}</p>
+                  <td className="px-5 py-4">
+                    <p className="text-[#3D3225] text-sm">{lead.company_name}</p>
+                    <p className="text-[#9A8B78] text-xs mt-0.5 truncate max-w-[250px]">{lead.ai_pitch}</p>
                   </td>
-                  <td className="px-4 py-3 hidden sm:table-cell">
-                    <p className="text-[#7D6D5A] text-sm">{lead.contact_email || '—'}</p>
+                  <td className="px-5 py-4 hidden sm:table-cell">
+                    <p className="text-[#6B5D4D] text-sm">{lead.contact_email || '—'}</p>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     <select
                       value={lead.status}
                       onChange={(e) => {
@@ -223,7 +221,7 @@ export default function PipelinePage() {
                         updateLeadStatus(lead.id, e.target.value);
                       }}
                       onClick={(e) => e.stopPropagation()}
-                      className={`text-xs px-2 py-1 rounded-lg border-0 cursor-pointer ${
+                      className={`text-xs px-3 py-1.5 border-0 cursor-pointer tracking-wider uppercase ${
                         statusOptions.find(s => s.key === lead.status)?.color || 'bg-gray-100'
                       }`}
                     >
@@ -234,9 +232,9 @@ export default function PipelinePage() {
                       ))}
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-5 py-4 text-right">
                     <button 
-                      className="text-[#9A8B78] hover:text-[#5C4D3C] text-sm"
+                      className="text-[#C9B99A] hover:text-[#3D3225] text-xs tracking-wider uppercase transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedLead(lead);
@@ -255,45 +253,46 @@ export default function PipelinePage() {
       {/* Lead Detail Modal */}
       {selectedLead && (
         <div 
-          className="fixed inset-0 bg-[#5C4D3C]/50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-[#3D3225]/60 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedLead(null)}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#FAF7F2] rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-xl"
+            className="bg-[#FDFBF7] max-w-lg w-full max-h-[90vh] overflow-y-auto border border-[#E8E0D4]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-[#E8DFD0]">
+            {/* Header */}
+            <div className="p-6 border-b border-[#E8E0D4]">
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className="font-serif text-xl text-[#5C4D3C]">{selectedLead.company_name}</h2>
-                  <p className="text-[#9A8B78] text-sm capitalize">{selectedLead.category}</p>
+                  <p className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-1">{selectedLead.category}</p>
+                  <h2 className="font-serif text-xl text-[#3D3225] font-light">{selectedLead.company_name}</h2>
                 </div>
                 <button
                   onClick={() => setSelectedLead(null)}
-                  className="text-[#9A8B78] hover:text-[#5C4D3C] text-2xl leading-none"
+                  className="text-[#9A8B78] hover:text-[#3D3225] text-xl transition-colors"
                 >
                   ×
                 </button>
               </div>
             </div>
             
-            <div className="p-6 space-y-5">
+            <div className="p-6 space-y-6">
               {/* Contact Info */}
-              <div className="grid grid-cols-1 gap-3">
+              <div className="space-y-3">
                 {selectedLead.contact_email && (
                   <div>
-                    <label className="text-[#9A8B78] text-xs uppercase tracking-wide">Email</label>
-                    <a href={`mailto:${selectedLead.contact_email}`} className="text-[#5C4D3C] block hover:underline">
+                    <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase">Email</label>
+                    <a href={`mailto:${selectedLead.contact_email}`} className="text-[#3D3225] block hover:text-[#C9B99A] transition-colors text-sm mt-1">
                       {selectedLead.contact_email}
                     </a>
                   </div>
                 )}
                 {selectedLead.website && (
                   <div>
-                    <label className="text-[#9A8B78] text-xs uppercase tracking-wide">Website</label>
-                    <a href={selectedLead.website} target="_blank" rel="noopener noreferrer" className="text-[#5C4D3C] block hover:underline truncate">
+                    <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase">Website</label>
+                    <a href={selectedLead.website} target="_blank" rel="noopener noreferrer" className="text-[#3D3225] block hover:text-[#C9B99A] transition-colors truncate text-sm mt-1">
                       {selectedLead.website}
                     </a>
                   </div>
@@ -303,8 +302,8 @@ export default function PipelinePage() {
               {/* AI Pitch */}
               {selectedLead.ai_pitch && (
                 <div>
-                  <label className="text-[#9A8B78] text-xs uppercase tracking-wide mb-1 block">Why They're a Good Fit</label>
-                  <p className="text-[#5C4D3C] text-sm bg-[#F0E9DD] rounded-lg p-3">
+                  <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-2 block">Why They're a Good Fit</label>
+                  <p className="text-[#3D3225] text-sm bg-[#F5F1EB] p-4 border border-[#E8E0D4]">
                     {selectedLead.ai_pitch}
                   </p>
                 </div>
@@ -313,8 +312,8 @@ export default function PipelinePage() {
               {/* Notes */}
               {selectedLead.notes && (
                 <div>
-                  <label className="text-[#9A8B78] text-xs uppercase tracking-wide mb-1 block">Collaboration Idea</label>
-                  <p className="text-[#5C4D3C] text-sm bg-[#F0E9DD] rounded-lg p-3">
+                  <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-2 block">Collaboration Idea</label>
+                  <p className="text-[#3D3225] text-sm bg-[#F5F1EB] p-4 border border-[#E8E0D4]">
                     {selectedLead.notes}
                   </p>
                 </div>
@@ -322,16 +321,16 @@ export default function PipelinePage() {
 
               {/* Status Update */}
               <div>
-                <label className="text-[#9A8B78] text-xs uppercase tracking-wide mb-2 block">Status</label>
+                <label className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase mb-3 block">Update Status</label>
                 <div className="flex flex-wrap gap-2">
                   {statusOptions.map((status) => (
                     <button
                       key={status.key}
                       onClick={() => updateLeadStatus(selectedLead.id, status.key)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                      className={`px-4 py-2 text-xs tracking-[0.1em] uppercase transition-all ${
                         selectedLead.status === status.key
-                          ? 'bg-[#5C4D3C] text-[#FAF7F2]'
-                          : 'bg-[#E8DFD0] text-[#5C4D3C] hover:bg-[#D4C4A8]'
+                          ? 'bg-[#3D3225] text-[#FDFBF7]'
+                          : 'bg-[#F5F1EB] text-[#6B5D4D] hover:bg-[#E8E0D4]'
                       }`}
                     >
                       {status.label}
@@ -341,16 +340,16 @@ export default function PipelinePage() {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 pt-4 border-t border-[#E8DFD0]">
+              <div className="flex gap-4 pt-4 border-t border-[#E8E0D4]">
                 <Link
                   href={`/dashboard/emails?lead=${selectedLead.id}`}
-                  className="flex-1 text-center py-2.5 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg text-sm hover:bg-[#4A3D2F] transition-colors"
+                  className="flex-1 text-center py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.15em] uppercase hover:bg-[#2A231A] transition-colors"
                 >
                   Write Email
                 </Link>
                 <button
                   onClick={() => deleteLead(selectedLead.id)}
-                  className="px-4 py-2 rounded-lg text-red-500 hover:bg-red-50 text-sm"
+                  className="px-6 py-3 text-[#9A8B78] hover:text-red-400 text-xs tracking-[0.1em] uppercase transition-colors"
                 >
                   Delete
                 </button>

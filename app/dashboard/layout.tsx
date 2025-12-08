@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { href: '/dashboard', label: 'Pipeline', icon: 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
-  { href: '/dashboard/find-leads', label: 'Find Leads', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' },
-  { href: '/dashboard/import', label: 'Import Leads', icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12' },
-  { href: '/dashboard/emails', label: 'Emails', icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+  { href: '/dashboard', label: 'Pipeline' },
+  { href: '/dashboard/find-leads', label: 'Find Leads' },
+  { href: '/dashboard/import', label: 'Import' },
+  { href: '/dashboard/emails', label: 'Emails' },
 ];
 
 // Simple password - change this to whatever you want
@@ -26,7 +26,6 @@ export default function DashboardLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if already authenticated (stored in sessionStorage)
     const auth = sessionStorage.getItem('dashboard_auth');
     if (auth === 'true') {
       setIsAuthenticated(true);
@@ -52,49 +51,62 @@ export default function DashboardLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
-        <div className="text-[#7D6D5A]">Loading...</div>
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center">
+        <div className="text-[#9A8B78] text-sm tracking-wider">Loading...</div>
       </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#FAF7F2] to-[#F5EFE6] flex items-center justify-center p-6">
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
-          <div className="text-center mb-8">
-            <h1 className="font-serif text-2xl text-[#5C4D3C] mb-2">Dashboard Login</h1>
-            <p className="text-[#9A8B78] text-sm">Enter password to access the partnership engine</p>
-          </div>
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-6">
+        {/* Subtle texture */}
+        <div 
+          className="fixed inset-0 pointer-events-none opacity-[0.015]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        
+        <div className="relative max-w-md w-full">
+          {/* Decorative frame */}
+          <div className="absolute -inset-4 border border-[#C9B99A]/20" />
           
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="w-full px-4 py-3 rounded-lg bg-[#F0E9DD] border border-[#E8DFD0] text-[#5C4D3C] placeholder:text-[#9A8B78] focus:outline-none focus:border-[#D4C4A8]"
-                autoFocus
-              />
+          <div className="bg-[#FDFBF7] p-12 border border-[#E8E0D4]">
+            <div className="text-center mb-10">
+              <p className="text-[#9A8B78] tracking-[0.3em] uppercase text-xs mb-3">Private Access</p>
+              <h1 className="font-serif text-2xl text-[#3D3225] font-light">Partnership Engine</h1>
             </div>
             
-            {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
-            )}
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-[#D4C8B8] text-[#3D3225] placeholder:text-[#B8A888] focus:outline-none focus:border-[#C9B99A] transition-colors text-center tracking-wider"
+                  autoFocus
+                />
+              </div>
+              
+              {error && (
+                <p className="text-red-400 text-xs text-center tracking-wider">{error}</p>
+              )}
+              
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#3D3225] text-[#FDFBF7] text-xs tracking-[0.2em] uppercase hover:bg-[#2A231A] transition-colors"
+              >
+                Enter
+              </button>
+            </form>
             
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#5C4D3C] text-[#FAF7F2] rounded-lg hover:bg-[#4A3D2F] transition-colors"
-            >
-              Login
-            </button>
-          </form>
-          
-          <div className="mt-6 text-center">
-            <Link href="/" className="text-[#9A8B78] text-sm hover:text-[#5C4D3C] transition-colors">
-              ← Back to site
-            </Link>
+            <div className="mt-10 text-center">
+              <Link href="/" className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase hover:text-[#3D3225] transition-colors">
+                ← Return to site
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -102,37 +114,47 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    <div className="min-h-screen bg-[#FDFBF7]">
+      {/* Subtle texture */}
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-[0.015] z-50"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
       {/* Top Nav */}
-      <header className="bg-[#FAF7F2] border-b border-[#E8DFD0] sticky top-0 z-50">
-        <div className="px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="font-serif text-xl text-[#5C4D3C]">
+      <header className="bg-[#FDFBF7] border-b border-[#E8E0D4] sticky top-0 z-40">
+        <div className="px-8 py-5 flex justify-between items-center">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="font-serif text-lg text-[#3D3225] tracking-wide">
               Michelle Choe
             </Link>
-            <span className="text-[#D4C4A8]">|</span>
-            <span className="text-[#9A8B78] text-sm tracking-wide">Partnership Engine</span>
+            <div className="w-[1px] h-4 bg-[#C9B99A]/40" />
+            <span className="text-[#9A8B78] text-xs tracking-[0.15em] uppercase">Partnership Engine</span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <Link 
               href="/" 
-              className="text-[#9A8B78] hover:text-[#5C4D3C] text-sm transition-colors"
+              className="text-[#9A8B78] hover:text-[#3D3225] text-xs tracking-[0.1em] uppercase transition-colors"
             >
-              ← Back to Site
+              View Site
             </Link>
             <button
               onClick={handleLogout}
-              className="text-[#9A8B78] hover:text-[#5C4D3C] text-sm transition-colors"
+              className="text-[#9A8B78] hover:text-[#3D3225] text-xs tracking-[0.1em] uppercase transition-colors"
             >
               Logout
             </button>
           </div>
         </div>
+        {/* Gold accent line */}
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-[#C9B99A] to-transparent opacity-30" />
       </header>
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-56 bg-[#F0E9DD] border-r border-[#E8DFD0] min-h-[calc(100vh-65px)] p-4">
+        <aside className="w-52 bg-[#F5F1EB] border-r border-[#E8E0D4] min-h-[calc(100vh-73px)] p-6">
           <nav className="space-y-1">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
@@ -140,16 +162,13 @@ export default function DashboardLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  className={`block px-4 py-3 text-xs tracking-[0.1em] uppercase transition-all ${
                     isActive 
-                      ? 'bg-[#FAF7F2] shadow-sm text-[#5C4D3C]' 
-                      : 'text-[#7D6D5A] hover:bg-[#FAF7F2]/50 hover:text-[#5C4D3C]'
+                      ? 'bg-[#FDFBF7] text-[#3D3225] border-l-2 border-[#C9B99A]' 
+                      : 'text-[#6B5D4D] hover:text-[#3D3225] hover:bg-[#FDFBF7]/50 border-l-2 border-transparent'
                   }`}
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
-                  </svg>
-                  <span className="font-medium text-sm">{item.label}</span>
+                  {item.label}
                 </Link>
               );
             })}
@@ -157,7 +176,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-8">
           {children}
         </main>
       </div>
